@@ -1,0 +1,61 @@
+﻿@model List<WebLightNovel.Models.Entity.Notify>
+@{
+    ViewBag.Title = "Notify";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<head>
+    <link href="~/css/Follow.css" rel="stylesheet" />
+</head>
+<div class="container">
+    <div class="row d-block clearfix">
+        @Html.Partial("Option")
+        <div style="text-align: center; margin: 0 auto 10px auto;">
+        </div>
+        <div class="col-12 col-lg-9 float-left">
+            <section class="basic-section noti-section clear">
+                <main class="sect-body">
+                    @foreach (var item in Model)
+                    {
+                        <article class="noti-item series-based clear " data-notification="ff3bea4a-b2c9-4a40-9b32-de693cadbd1e">
+                            <a class="noti-url" href="@item.url_notify">
+                                <div class="noti-item_img">
+                                    <img src="~/avatar/90071nocover.jpg">
+                                </div>
+                                <div class="noti-item_info">
+                                    <div class="noti-content">
+                                        <span> <b>@item.content</b></span>
+                                        <time class="timeago block">
+                                            @{Html.RenderAction("ConvertTimeChapter", "Home", new { dateTime = item.time });}
+                                        </time>
+                                    </div>
+                                </div>
+                            </a>
+                        </article>
+                    }
+
+
+                </main>
+            </section>
+        </div>
+    </div>
+</div>
+<script>
+    const markRead = document.getElementsByClassName('mark-read');
+    const update_action = document.getElementsByClassName('update-action');
+    for (let i = 0; i < markRead.length; i++) {
+        markRead[i].addEventListener('click', function () {
+            let story_id = markRead[i].getAttribute('id');
+            $.ajax({
+                url: "/Home/ConfirmRead",
+                data: { story_id: story_id },
+                success: function (data) {
+                    if (data == "true") {
+                        update_action[i].innerHTML = '<span class="update-status no-chapters disabled">Không có</span><br>';
+                    }
+                    else
+                        alert(data);
+                }
+            });
+        })
+    }
+</script>

@@ -1,0 +1,178 @@
+﻿@model List<WebLightNovel.Models.Member.ModelMessenger>
+@{
+    ViewBag.Title = "Messenger";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TempData["urlMess"] = Request.Url.ToString();// lay dia chi trang hien tai
+
+}
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/InforGroup/main.css" rel="stylesheet" />
+    <title>Tin nhắn</title>
+
+</head>
+<main id="mainpart" class="page_user-pm" style="min-height: 390.01px;">
+    <div class="container">
+        <div class="row d-block clearfix">
+            @Html.Partial("Option")
+            <div class="col-12 col-lg-9 float-left">
+                <section class="user-pm">
+                    <div class="mail-function">
+                        <a id="contact_user" href="#" class="button button-green">Gửi thư mới</a>
+                        <a href="/Member/Messenger" class="button button-blue">Hộp thư</a>
+                        <a href="/Member/Messenger?type=send" class="button button-blue">Thư đã gửi</a>
+                        <a id="button-deleteLetter" href="#" class="button button-red">Xóa thư</a>
+                    </div>
+                    <ul class="mail-list">
+                        @foreach (var item in Model)
+                        {
+                            <li class="mail">
+                                <div class="mail-name">
+                                    <input type="checkbox" name="messages[]" value="@item.letter_id" class="mail-checkbox">
+                                    <a href="https://docln.net/tin-nhan/9650">
+                                        @item.title
+                                        <small>@item.content.Replace("@LineBreak", " ")</small>
+                                    </a>
+                                </div>
+                                <div class="mail-time">
+                                    <time class="topic-time timeago" title="">@item.time</time>
+                                </div>
+                                <div class="sender">
+                                    <div class="sender-avatar">
+                                        <img src="/avatar/@item.avatar">
+                                    </div>
+                                    <a class="sender-name" href="/thanh-vien/159305">@item.sender_name</a>
+                                </div>
+                            </li>
+                        }
+
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+</main>
+<form id="myForm" action="/Member/SendMessenger" method="post">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="btn_close" type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thư mới</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body_item">
+                        <input name="userNameTo" value="" type="text" placeholder="Người nhận" />
+                    </div>
+                    <div class="modal-body_item">
+                        <input required name="title" type="text" placeholder="Tiêu đề" />
+                    </div>
+                    <div style="margin-top:10px" class="">
+                        <input required name="content" type="text" id="content" />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Gửi đi</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<div id="toast"></div>
+<script src="~/Scripts/Toast/Toast.js"></script>
+@if (TempData["SendMessenger"] != null)
+{
+    <script>
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã gửi tin nhắn thành công.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        showSuccessToast();
+    </script>
+}
+@if (TempData["ErrorSendMessenger"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Thao tác thất bại vui lòng thử lại",
+                type: "error",
+                duration: 5000
+            });
+        }
+        showErrorToast();
+    </script>
+}
+@if (TempData["ErrorNotFoundSendMessenger"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Tên người nhận không tồn tại vui lòng thử lại",
+                type: "error",
+                duration: 5000
+            });
+        }
+        showErrorToast();
+    </script>
+}
+<script>
+    const contact_user = document.getElementById('contact_user');
+    contact_user.addEventListener('click', function (e) {
+        e.preventDefault();
+        $('#myModal').css('display', 'block');
+    })
+    $('#btn_close').on('click', function () {
+        $('#myModal').css('display', 'none');
+
+    })
+    $('#profile-changer_ava').on('click', function () {
+        $('#user_avatar_file').click();
+    })
+    $(document).on('click', function (e) {
+        if ($(e.target).closest($('.modal-content')).length == 0 && $(e.target).closest(contact_user).length == 0)
+            $('#myModal').css('display', 'none');
+    })
+
+    //su kien chon nut xoa thu
+    const list_mail = document.getElementsByClassName('mail');
+    const list_letterTarget = document.getElementsByName('messages[]');
+    const btn_del_letter = document.getElementById('button-deleteLetter');
+    let arrIdLetter = new Array();
+    btn_del_letter.addEventListener('click', function () {
+        for (let i = 0; i < list_letterTarget.length; i++) {
+            if (list_letterTarget[i].checked)
+                arrIdLetter.push(list_letterTarget[i].value);
+        }
+        const jsonArrIdLetter = JSON.stringify(arrIdLetter);
+        $.ajax({
+            url: '/Member/DeleteLetter',
+            contentType: "application/json",
+            data: { jsonArrIdLetter },
+            success: function () {
+                for (let i = 0; i < list_letterTarget.length; i++) {
+                    if (list_letterTarget[i].checked)
+                        list_mail[i].style.display = 'none';
+                }
+                alert('Xoá thư gửi thành công');
+            },
+            error: function (xhr, status, error) {
+                alert('Đã xảy ra lỗi:', error);
+            }
+        });
+    });
+
+
+</script>
+<script src="~/Scripts/CkEditor/mappingInputForm2.js"></script>

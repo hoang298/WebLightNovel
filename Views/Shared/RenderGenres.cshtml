@@ -1,0 +1,14 @@
+﻿@model List<WebLightNovel.Models.Detail.GenreViewModel>
+@{
+    Layout = null;
+}
+<li class="header__main-item genres">
+    <a href="">Thể loại</a>
+    <ul class="header__listgenres">
+        @foreach (var item in Model)
+        {
+            <li class="header__listgenres-item"><a href="@item.link_genre">@item.name</a> </li>
+        }
+
+    </ul>
+</li>

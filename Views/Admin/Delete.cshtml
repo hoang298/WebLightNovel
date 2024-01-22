@@ -1,0 +1,81 @@
+﻿@model WebLightNovel.Models.Entity.Story
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Story</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.author_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.author_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.artist_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.artist_id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cover_image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cover_image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.synopsis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.synopsis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.state)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.state)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.translation_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.translation_id)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

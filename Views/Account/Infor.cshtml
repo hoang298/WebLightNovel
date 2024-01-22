@@ -1,0 +1,324 @@
+﻿@model WebLightNovel.Models.Account.UserModel
+@using WebLightNovel.Models.Account
+@using Microsoft.AspNet.Identity
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/css/InforGroup/main.css" rel="stylesheet" />
+    <title>Thành viên</title>
+
+
+</head>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var list_post = ViewBag.list_post as List<WebLightNovel.Models.Entity.Story>;
+    var list_join = ViewBag.list_join as List<WebLightNovel.Models.Entity.Story>;
+    TempData["urlMess"] = Request.Url.ToString();// lay dia chi trang hien tai
+}
+<div class="profile-feature-wrapper">
+    <div class="container">
+        <div class="profile-feature">
+            <div class="profile-cover">
+                <div class="fourone-ratio">
+                    <div class="content img-in-ratio" style="background-image: url('https://i0.wp.com/englishlightnovels.com/wp-content/uploads/2021/06/new-light-novel-series-releasing-in-june-2021-eln-banner.jpg?fit=1280%2C720&ssl=1');"></div>
+                </div>
+                <div id="profile-changer_cover" class="profile-changer none block-m">
+                    @if (Model.user_id == User.Identity.GetUserId())
+                    {
+                        <form id="form_changeAvatar" action="/Member/ChangeAvatar" method="post" enctype="multipart/form-data">
+                            <input name="file" type="file" id="user_avatar_file" style="display: none">
+                        </form>
+                    }
+
+                </div>
+            </div>
+            <div class="profile-nav">
+                <div class="profile-ava-wrapper">
+                    <div class="profile-ava">
+                        <div id="profile-changer_ava" class="profile-changer">
+                            <span class="p-c_text"><i class="fas fa-camera"></i></span>
+                        </div>
+                        @if (Model.avatar.StartsWith("http"))
+                        {
+                            <img id="avatar_user" src="@Model.avatar" alt="Alternate Text" />
+                        }
+                        else
+                        {
+                            <img src="~/avatar/@Model.avatar">
+                        }
+                    </div>
+                </div>
+                @if (Model.user_id != User.Identity.GetUserId())
+                {
+                    <div class="profile-function at-desktop none block-m">
+                        <a id="contact_user" href="" class="button to-contact button-green"><i class="fas fa-paper-plane"></i> Liên hệ</a>
+                    </div>
+                }
+
+                <div class="profile-intro">
+
+                    <h3 class="profile-intro_name text-lg font-bold rainbow_text">
+                        @Model.name
+                    </h3>
+
+                </div>
+                <div class="profile-function at-mobile none-m">
+                    <a href="https://docln.net/tin-nhan/moi?to=Hako-chan" class="button to-contact button-green"><i class="fas fa-paper-plane"></i> Liên hệ</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<form id="myForm" action="/Member/SendMessenger" method="post">
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button id="btn_close" type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thư mới</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-body_item">
+                        <input name="userNameTo" value="@Model.name" type="text" placeholder="Người nhận" />
+                    </div>
+                    <div class="modal-body_item">
+                        <input required name="title" type="text" placeholder="Tiêu đề" />
+                    </div>
+                    <div style="margin-top:10px" class="">
+                        <input required name="content" type="text" id="content" />
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Gửi đi</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-lg-3">
+            <section class="basic-section clear">
+
+                <main class="sect-body">
+
+                    <div class="profile-info-item">
+                        <span class="info-name"><i class="fas fa-calendar"></i> Tham gia: </span><span class="info-value">@Model.dateJoin.ToString("dd-MM-yyyy")</span>
+                    </div>
+                </main>
+            </section>
+        </div>
+        <div class="col-12 col-md-12 col-lg-9 col-xl-9">
+            <section class="profile-showcase">
+                <header><span class="number">@list_post.Count</span><span class="showcase-title">Truyện đã đăng</span></header>
+                <div class="row">
+                    @foreach (var item in list_post)
+                    {
+                        <div class="col-12 col-md-6">
+                            <div class="showcase-item">
+                                <div class="row">
+                                    <div class="series-cover col-4">
+                                        <div class="a6-ratio">
+                                            <div class="content img-in-ratio" style="background-image: url('@Url.Content("~/Content/imageIllustration/" + item.cover_image)')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="series-info">
+                                            <div class="series-type-wrapper">
+                                                <small class="series-type type-translation">Truyện dịch</small>
+                                            </div>
+                                            <h5 class="series-name text-base font-bold">
+                                                <a href="/Story/Detail?id=@item.story_id">@item.title</a>
+                                            </h5>
+                                        </div>
+                                        <div class="series-status">
+                                            <div class="status-item">
+                                                <span class="status-name">Tình trạng:</span>
+                                                @if (item.state == 1)
+                                                {
+                                                    <span class="status-value">Đang tiến hành</span>
+                                                }
+                                                @if (item.state == 0)
+                                                {
+                                                    <span class="status-value">Tạm ngưng</span>
+                                                }
+                                                @if (item.state == 2)
+                                                {
+                                                    <span class="status-value">Đã hoàn thành</span>
+                                                }
+                                            </div>
+                                            <div class="status-item">
+                                                <span class="status-name">Lần cuối:</span>
+                                                <span class="status-value">
+                                                    <time class="timeago" title="29/03/2022 09:28:04" datetime="2022-03-29T09:28:04+07:00">1 năm</time>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </section>
+            <section class="profile-showcase">
+                <header><span class="number">@list_join.Count</span><span class="showcase-title">Truyện đã tham gia</span></header>
+                <div class="row">
+                    @foreach (var item in list_join)
+                    {
+                        <div class="col-12 col-md-6">
+                            <div class="showcase-item">
+                                <div class="row">
+                                    <div class="series-cover col-4">
+                                        <div class="a6-ratio">
+                                            <div class="content img-in-ratio" style="background-image: url('@Url.Content("~/image/" + item.cover_image)')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="series-info">
+                                            <div class="series-type-wrapper">
+                                                <small class="series-type type-translation">Truyện dịch</small>
+                                            </div>
+                                            <h5 class="series-name text-base font-bold">
+                                                <a href="/Story/Detail?id=@item.story_id">@item.title</a>
+                                            </h5>
+                                        </div>
+                                        <div class="series-status">
+                                            <div class="status-item">
+                                                <span class="status-name">Tình trạng:</span>
+                                                @if (item.state == 1)
+                                                {
+                                                    <span class="status-value">Đang tiến hành</span>
+                                                }
+                                                @if (item.state == 0)
+                                                {
+                                                    <span class="status-value">Tạm ngưng</span>
+                                                }
+                                                @if (item.state == 2)
+                                                {
+                                                    <span class="status-value">Đã hoàn thành</span>
+                                                }
+                                            </div>
+                                            <div class="status-item">
+                                                <span class="status-name">Lần cuối:</span>
+                                                <span class="status-value">
+                                                    <time class="timeago" title="29/03/2022 09:28:04" datetime="2022-03-29T09:28:04+07:00">1 năm</time>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+<div id="toast"></div>
+<script src="~/Scripts/Toast/Toast.js"></script>
+@if (TempData["SendMessenger"] != null)
+{
+    <script>
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã gửi tin nhắn thành công.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        showSuccessToast();
+    </script>
+}
+@if (TempData["ErrorSendMessenger"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Thao tác thất bại vui lòng thử lại",
+                type: "error",
+                duration: 5000
+            });
+        }
+        showErrorToast();
+    </script>
+}
+@if (TempData["ChangeSucces"] != null)
+{
+    <script>
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã thay đổi avatar thành công.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        showSuccessToast();
+    </script>
+}
+@if (TempData["ErrorChangeSucces"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Thao tác thất bại vui lòng thử lại",
+                type: "error",
+                duration: 5000
+            });
+        }
+        showErrorToast();
+    </script>
+}
+<script>
+    const contact_user = document.getElementById('contact_user');
+    if (contact_user != undefined) {
+        contact_user.addEventListener('click', function (e) {
+            e.preventDefault();
+            $('#myModal').css('display', 'block');
+        })
+        $('#btn_close').on('click', function () {
+            $('#myModal').css('display', 'none');
+
+        })
+    }    
+    $('#profile-changer_ava').on('click', function () {
+        console.log('a');
+        $('#user_avatar_file').click();
+    })
+    $(document).on('click', function (e) {
+        if ($(e.target).closest($('.modal-content')).length == 0 && $(e.target).closest(contact_user).length == 0)
+            $('#myModal').css('display', 'none');
+    })
+    let fileInput = document.getElementById('user_avatar_file');
+    function isImageFile(fileName) {
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp']; // Danh sách đuôi file ảnh phổ biến
+
+        const extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase(); // Lấy đuôi file và chuyển thành chữ thường
+
+        return imageExtensions.includes(extension); // Kiểm tra xem đuôi file có nằm trong danh sách đuôi file ảnh hay không
+    }
+    fileInput.oninput = function () {
+        if (isImageFile(fileInput.files[0].name)) {
+            $('#form_changeAvatar').submit();
+        }
+        else
+            alert('Tệp của bạn không phải là ảnh')
+    }
+</script>
+<script src="~/Scripts/CkEditor/mappingInputForm2.js"></script>

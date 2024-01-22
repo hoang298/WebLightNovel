@@ -1,0 +1,116 @@
+﻿@model WebLightNovel.Models.Entity.PostStory
+
+@{
+    ViewBag.Title = "DetailPostStory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var user = ViewBag.userName as WebLightNovel.Models.Entity.UserAccount;
+}
+
+<div>
+    <h4>PostStory</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.user_id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.user_id)
+        </dd>
+        <dd>
+            @user.name
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.author_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.author_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.artist_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.artist_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.synopsis)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.synopsis)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status_story)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status_story)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.genres)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.genres)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.type_story)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.type_story)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trans_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trans_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.translationSource)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.translationSource)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ordinalNumber }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

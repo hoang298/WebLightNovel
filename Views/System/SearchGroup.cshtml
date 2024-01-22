@@ -1,0 +1,89 @@
+﻿@model List<WebLightNovel.Models.SystemModel.SearchGroupViewModel>
+@{
+    ViewBag.Title = "SearchGroup";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+    int i = 1;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhóm
+                </div>
+                <div class="panel-body">
+                    <div style="float: right; margin-bottom: 20px">
+                        <form class="form-inline" method="get" action="/System/SearchGroup">
+                            <div class="input-group">
+                                <input style="width: 300px" type="text" class="form-control" name="key" placeholder="Tên nhóm" value="">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" value="Tìm kiếm">Tìm kiếm</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="col-2">#</th>
+                                <th scope="col">Tên nhóm</th>
+                                <th scope="col">Người lập nhóm</th>
+                                <th scope="col">Ngày tạo</th>
+                                <th scope="col">Tùy chọn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row">@i</th>
+                                    <td>@item.name</td>
+                                    <td>@item.user_name</td>
+                                    <td>@item.date_create</td>
+                                    <td>
+                                        @*<a class="btn btn-info" href="/System/InforGroup?trans_id=@item.translation_id">Thông tin nhóm</a>*@
+                                        @if ((int)item.state == 0)
+                                        {
+                                            <button id="@item.translation_id" class="btn btn-success" type="button">Xin gia nhập</button>
+                                        }
+                                        else if ((int)item.state == 1)
+                                        {
+                                            <button disabled class="btn btn-success" type="button">Đang chờ xác nhận</button>
+                                        }
+                                        else
+                                        {
+                                            <button disabled class="btn btn-success" type="button">Đã gia nhập</button>
+                                        }
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const btn_join = document.getElementsByClassName('btn-success');
+    for (let i = 0; i < btn_join.length; i++) {
+        btn_join[i].addEventListener('click', function () {
+            let trans_id = btn_join[i].getAttribute('id');
+            $.ajax({
+                url: "/System/AddReqJoin",
+                data: { trans_id: trans_id },
+                success: function (data) {
+                    if (data == "true") {
+                        btn_join[i].textContent = "Đang chờ xác nhận";
+                        btn_join[i].disabled = true;
+                    }
+                    else
+                        alert(data);
+                }
+            });
+        })
+    }
+</script>

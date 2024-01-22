@@ -1,0 +1,30 @@
+﻿@model List<WebLightNovel.Models.ModelStory.StoryIndexViewModel>
+<ul class="list__rank-content">
+    @foreach (var item in Model)
+    {
+        <li class="rank__item">
+            <span class="rank_number">01</span>
+            <div class="rank__item-wrapper">
+                <a href="">
+                    <img src="~/Content/imageIllustration/@item.cover_image" alt="">
+                </a>
+            </div>
+            <div class="rank__item-caption">
+                <div class="rank__item-caption-title">
+                    <a class="overflowContent" href="">@item.title</a>
+                </div>
+                <div class="rank__item-option">
+                    <a class="overflowContent" href="/Story/DetailChapter?id=@item.newChapter_id">
+                        @item.chapter_name
+                    </a>
+                    <div class="rank__view">
+                        <i style="font-size: 16px;line-height:16px" class="far fa-eye fa-sm"></i>
+                        <span style="font-size: 16px">@item.day_views</span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+
+
+</ul>

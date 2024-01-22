@@ -1,0 +1,97 @@
+﻿@model WebLightNovel.Models.Entity.Story
+
+@{
+    ViewBag.Title = "EditStory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+    <h2>EditStory</h2>
+    <div id="info_story" data-story_id="@Model.story_id" class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.story_id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="value_title" class="form-control" type="text" value="@Model.title" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên tác giả</label>
+            <div class="col-md-10">
+                <input id="value_author" class="form-control" type="text" value="@ViewBag.authorName" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên họa sĩ</label>
+            <div class="col-md-10">
+                <input id="value_artist" class="form-control" type="text" value="@ViewBag.artistName" />
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.cover_image, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <img style="width:150px;height:200px" src="/image/@Model.cover_image" alt="Alternate Text" />
+                <input id="value_img" class="form-control" type="file" value="" />
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.synopsis, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="value_synopsis" class="form-control" type="text" value="@Model.synopsis" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.state, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input id="value_state" class="form-control" type="text" value="@Model.state" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên nhóm dịch</label>
+            <div class="col-md-10">
+                <input id="value_trans" class="form-control" type="text" value="@ViewBag.transName" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button id="btn_submit" type="submit" value="Save" class="au-btn--submit" />Save
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+    <div>
+        <a href="/Admin/InsertVolume?id=@Model.story_id">Thêm Volume</a>
+    </div>
+    <div>
+        <a href="/Admin/ListVolume?id=@Model.story_id">Danh sách Volume</a>
+    </div>
+    <script>
+        const btn_submit = document.getElementById('btn_submit');
+        const story_id = document.getElementById('info_story').getAttribute('data-story_id');
+        btn_submit.addEventListener('click', function () {
+            const title = document.getElementById('value_title').value;
+            const author = document.getElementById('value_author').value;
+            const artist = document.getElementById('value_artist').value;
+            const synopsis = document.getElementById('value_synopsis').value;
+            const state = document.getElementById('value_state').value;
+            const trans = document.getElementById('value_trans').value;
+            $.ajax({
+                type: "Post",
+                url: "/Admin/UpdateStory",
+                data: { story_id: story_id, title: title, author: author, artist: artist, synopsis: synopsis, state: state, trans: trans },
+                success: function () {
+                    alert('success')
+                }
+            });
+        })
+    </script>

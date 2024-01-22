@@ -1,0 +1,349 @@
+﻿@model WebLightNovel.Models.SystemModel.StorySystemViewModel
+@{
+    ViewBag.Title = "Story";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+}
+
+<head>
+    <link href="~/css/System/Story.css" rel="stylesheet" />
+</head>
+<div class="container" style="margin-top:30px;">
+    <h3>Quản lý truyện @Model.story_name</h3>
+    <div class="row">
+        <div class="col-md-8">
+            <ul id="tree1">
+                <li>
+                    <span class="story_item" >
+                        @Model.story_name
+                        <i  class="fas fa-edit story"></i>
+                        <div class="ln-comment-edit edit_story">
+                            <span class="ln-comment-edit-span">
+                                <i class="fas fa-edit"> </i>
+                                <a data-story_id="@Model.story_id" id="edit_story" href="#">Sửa truyện</a> 
+                            </span>
+                            <span class="ln-comment-delete">
+                                <i class="fas fa-plus"> </i>
+                                <a id="insert_story" href="#">Thêm tập mới</a> 
+                            </span>
+                            <span class="ln-comment-delete">
+                                <i class="fas fa-sort"> </i>
+                                <a id="sort_volume" href="#">Sắp xếp tập</a> 
+                            </span>
+                        </div>
+                    </span>
+                    <ul>
+                        @foreach (var item in Model.listVol)
+                        {
+                            <li>
+                                <span class="volume_item">
+                                    @item.name
+                                    <i style="display:none" class="fas fa-edit volume"></i>
+                                    <div class="ln-comment-edit edit_volume">
+                                        <span class="ln-comment-edit-span">
+                                            <i class="fas fa-edit"> </i>
+                                            <a id="@item.volume_id" class="edit_volume_icon" href="#">Sửa tập</a> 
+                                        </span>
+                                        <span class="ln-comment-delete">
+                                            <i class="fas fa-plus"> </i>
+                                            <a class="create_chapter_icon" href="#">Thêm chương mới</a> 
+                                        </span>
+                                        <span class="ln-comment-delete">
+                                            <i class="fas fa-sort"> </i>
+                                            <a href="#">Sắp xếp chương</a> 
+                                        </span>
+                                        <span class="ln-comment-delete">
+                                            <i class="fas fa-times"> </i>
+                                            <a class="delete_volume_icon" href="#">Xóa tập</a> 
+                                        </span>
+                                    </div>
+                                </span>
+                                <ul>
+                                    @foreach (var item1 in Model.listChap.Where(h => h.volume_id == item.volume_id))
+                                    {
+                                    <li >
+                                        <span class="chapter_item">
+                                            @item1.name
+                                            <i style="display:none" class="fas fa-edit chapter"></i>
+                                            <div class="ln-comment-edit edit_chapter">
+                                                <span class="ln-comment-edit-span">
+                                                    <i class="fas fa-edit"> </i>
+                                                    <a class="edit_chapter_icon" href="#">Sửa chương</a> 
+                                                </span>
+
+                                                <span class="ln-comment-delete">
+                                                    <i class="fas fa-times"> </i>
+                                                    <a id="@item1.chapter_id" class="delete_chapter_icon" href="#">Xóa chương</a>
+                                                </span>
+                                            </div>
+                                        </span> 
+                                        
+                                    </li>
+                                    }
+                                </ul>
+                            </li>
+
+                        }
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<form>
+    <div id="modal" class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__body">
+            <!-- form đăng nhập -->
+            <div class="container" style="overflow: auto; max-height:700px">
+                <div class="row" >
+                    <div class="col-md-10 col-md-offset-1">
+                        <div class="panel panel-default">    
+                            <button id="btn_close" type="button" class="close" data-dismiss="modal">×</button>
+                            <div class="panel-body">                      
+                                <table class="table" style="max-height:1000px">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-2">Tên Volume</th>
+                                            <th scope="col">Số thứ tự</th>
+                                            <th scope="col">Tùy chọn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.listVol)
+                                        {
+                                            <tr>
+                                                <td>@item.name</td>
+                                                <td><input id="@item.volume_id" name="ordinalNumber" type="number" min="1" max="1000" value="@item.ordinalNumber" /></td>
+                                                <td>                                                    
+                                                      <button class="btn btn-success btn_sort_update" type="button">Cập nhật</button>                                                                                                   
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</form>
+<script>
+    $.fn.extend({
+        treed: function (o) {
+            var openedClass = 'glyphicon-minus-sign';
+            var closedClass = 'glyphicon-plus-sign';
+            if (typeof o != 'undefined') {
+                if (typeof o.openedClass != 'undefined') {
+                    openedClass = o.openedClass;
+                }
+                if (typeof o.closedClass != 'undefined') {
+                    closedClass = o.closedClass;
+                }
+            };
+            //initialize each of the top levels
+            var tree = $(this);
+            tree.addClass("tree");
+            tree.find('li').has("ul").each(function () {
+                var branch = $(this); //li with children ul
+                branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
+                branch.addClass('branch');
+                branch.on('click', function (e) {
+                    if (this == e.target) {
+                        var icon = $(this).children('i:first');
+                        icon.toggleClass(openedClass + " " + closedClass);
+                        $(this).children().children().toggle();
+                    }
+                })
+                branch.children().children().toggle();
+            });
+            //fire event from the dynamically added icon
+            tree.find('.branch .indicator').each(function () {
+                $(this).on('click', function () {
+                    $(this).closest('li').click();
+                });
+            });
+            //fire event to open branch if the li contains an anchor instead of text
+            tree.find('.branch>a').each(function () {
+                $(this).on('click', function (e) {
+                    $(this).closest('li').click();
+                    e.preventDefault();
+                });
+            });
+            //fire event to open branch if the li contains a button instead of text
+            tree.find('.branch>button').each(function () {
+                $(this).on('click', function (e) {
+                    $(this).closest('li').click();
+                    e.preventDefault();
+                });
+            });
+        }
+    });
+
+    //Initialization of treeviews
+
+    $('#tree1').treed();
+</script>
+
+<script>
+    const list_vol = document.getElementsByClassName('volume');
+    const list_chap = document.getElementsByClassName('chapter');
+    const list_volume_item = document.getElementsByClassName('volume_item');
+    const list_chap_item = document.getElementsByClassName('chapter_item');
+    const list_vol_edit = document.getElementsByClassName('edit_volume');
+    const list_chap_edit = document.getElementsByClassName('edit_chapter');
+
+    for (let i = 0; i < list_volume_item.length; i++) {
+        list_vol[i].style.display = 'none';
+        list_volume_item[i].addEventListener('mouseover', function () {
+            list_vol[i].style.display = 'inline';
+        })
+        list_volume_item[i].addEventListener('click', function () {
+            list_vol[i].style.display = 'inline';
+        })
+        list_volume_item[i].addEventListener('mouseout', function () {
+                list_vol[i].style.display = 'none';
+        })
+        list_vol[i].addEventListener('mouseover', function () {
+            list_vol[i].style.cursor = 'pointer';
+        })
+        list_vol[i].addEventListener('click', function () {
+            let list_item_edit = list_vol_edit[i].getElementsByTagName("span");
+            for (let j = 0; j < list_item_edit.length; j++) {
+                list_item_edit[j].style.display = 'block';
+            }
+            $(list_vol_edit[i]).toggle();
+        });
+        $(document).on('click', function (e) {
+            if ($(e.target).closest(list_vol_edit[i]).length == 0 && $(e.target).closest(list_vol[i]).length == 0) {
+                $(list_vol_edit[i]).css('display', 'none');
+            }
+        });
+    }
+
+
+    for (let i = 0; i < list_chap_item.length; i++) {
+        list_chap_item[i].addEventListener('mouseover', function () {
+            list_chap[i].style.display = 'inline';
+        })
+        list_chap_item[i].addEventListener('mouseout', function () {
+            list_chap[i].style.display = 'none';
+        })
+        list_chap_item[i].addEventListener('click', function () {
+            list_chap[i].style.display = 'inline';
+            $(list_chap_edit[i]).toggle();
+        })
+        
+        $(document).on('click', function (e) {
+            if ($(e.target).closest(list_chap_edit[i]).length == 0 && $(e.target).closest(list_chap[i]).length == 0) {
+                $(list_chap_edit[i]).css('display', 'none');
+            }
+        });
+    }
+    const story = document.getElementsByClassName('story')[0];
+    const edit_story = document.getElementsByClassName('edit_story')[0];
+    const story_item = document.getElementsByClassName('story_item')[0];
+    edit_story.style.display = 'none'
+    story_item.addEventListener('mouseover', function () {
+        story.style.display = 'inline';
+    });
+    story_item.addEventListener('mouseout', function () {
+        story.style.display = 'none';
+    });
+    story.addEventListener('click', function () {
+        $(edit_story).toggle();
+    });
+    $(document).on('click', function (e) {
+        if ($(e.target).closest(edit_story).length == 0 && $(e.target).closest(story).length == 0) {
+            $(edit_story).css('display', 'none');
+        }
+    });
+    const link_edit_story = document.getElementById('edit_story');
+    const link_insert_story = document.getElementById('insert_story');
+    const story_id = link_edit_story.getAttribute('data-story_id');
+    link_edit_story.addEventListener("click", function (event) {
+        event.preventDefault();
+        window.open("https://localhost:44309/System/EditStory?story_id="+story_id, "_blank");
+    });
+    link_insert_story.addEventListener("click", function (event) {
+        event.preventDefault();
+        window.open("https://localhost:44309/System/CreateVolume?story_id=" + story_id, "_blank");
+    });
+    const link_edit_volume_icon = document.getElementsByClassName('edit_volume_icon');
+    for (let i = 0; i < link_edit_volume_icon.length; i++) {
+        let volume_id = link_edit_volume_icon[i].getAttribute('id');
+        link_edit_volume_icon[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            window.open("https://localhost:44309/System/EditVolume?volume_id=" + volume_id, "_blank");
+        })
+    }
+    const delete_volume_icon = document.getElementsByClassName('delete_volume_icon');
+    for (let i = 0; i < delete_volume_icon.length; i++) {
+        let volume_id = link_edit_volume_icon[i].getAttribute('id');
+        delete_volume_icon[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            window.open("https://localhost:44309/System/DeleteVolume?volume_id=" + volume_id, "_blank");
+        })
+    }
+    const create_chapter_icon = document.getElementsByClassName('create_chapter_icon');
+    for (let i = 0; i < create_chapter_icon.length; i++) {
+        let volume_id = link_edit_volume_icon[i].getAttribute('id');
+        create_chapter_icon[i].addEventListener("click", function (event) {
+            event.preventDefault();
+            window.open("https://localhost:44309/System/CreateChapter?story_id=" + story_id +"&volume_id="+volume_id, "_blank");
+        })
+    }
+   
+
+    const modal = document.getElementById('modal');
+    const sort_volume = document.getElementById('sort_volume');
+    sort_volume.addEventListener('click', function (e) {
+        e.preventDefault();
+        modal.style.display = 'flex';
+    })
+    const input_sort_volume = document.getElementsByName('ordinalNumber');   
+    const btn_sort_update = document.getElementsByClassName('btn_sort_update');
+    for (let i = 0; i < btn_sort_update.length; i++) {
+        btn_sort_update[i].addEventListener('click', function () {
+            let volume_id = input_sort_volume[i].getAttribute('id');
+            let ordinalNumber = input_sort_volume[i].value;
+            $.ajax({
+                url: "/System/UpdateOrdinalNumber",
+                data: { volume_id: volume_id, ordinalNumber: ordinalNumber },
+                success: function (data) {
+                    if (data == "true")
+                        alert('Cập nhật thành công')
+                    else
+                        alert('Thao tác thất bại xin thử lại')
+                }
+            });
+        })
+    }
+
+    const edit_chapter_icon = document.getElementsByClassName('edit_chapter_icon');
+    const delete_chapter_icon = document.getElementsByClassName('delete_chapter_icon');
+    for (let i = 0; i < edit_chapter_icon.length; i++) {
+        let chapter_id = delete_chapter_icon[i].getAttribute('id');
+        edit_chapter_icon[i].addEventListener("click", function (event) {
+            window.open("https://localhost:44309/System/EditChapter?chapter_id=" + chapter_id, "_blank");
+        })
+    }
+    for (let i = 0; i < delete_chapter_icon.length; i++) {
+        let chapter_id = delete_chapter_icon[i].getAttribute('id');
+        delete_chapter_icon[i].addEventListener('click', function (event) {
+            event.preventDefault();
+            window.open("https://localhost:44309/System/DeleteChapter?chapter_id=" + chapter_id, "_blank");
+        })
+    }
+
+    $('#btn_close').on('click', function () {
+        modal.style.display = 'none';
+    })
+    $('.panel-default').focusout(function () {
+        modal.style.display = 'none';
+    })
+</script>

@@ -1,0 +1,65 @@
+﻿@{ 
+    Layout = null;
+}
+<div class="translator__list-convert">
+    <div class="translator__list-wrapper">
+        <div class="convert__item-title">
+            <span>Truyện cùng nhóm dịch</span>
+        </div>
+        <div class="list__convert">
+            @if (ViewBag.listStoryofTrans != null)
+            {
+                foreach (var item in ViewBag.listStoryofTrans as List<WebLightNovel.Models.ModelStory.StoryIndexViewModel>)
+                {
+                    <div class="convert__item padding-all-10">
+                        <div class="convert__item-img">
+                            <img src="~/Content/imageIllustration/@item.cover_image" alt="">
+                        </div>
+                        <div class="convert__item-info">
+                            <h5 class="convert__item-name">
+                                <a href="/Story/Detail?id=@item.story_id">@item.title</a>
+                            </h5>
+                            <span>
+                                Lần cuối  @item.newtimeUpdate
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+    </div>
+</div>
+<div class="translator__list-convert">
+    <div class="translator__list-wrapper">
+        <div class="convert__item-title">
+            <span>Truyện cùng tác giả</span>
+        </div>
+        <div class="list__convert">
+            @if (ViewBag.listStoryofAuthor != null)
+            {
+                foreach (var item in ViewBag.listStoryofAuthor as List<WebLightNovel.Models.ModelStory.StoryIndexViewModel>)
+                {
+                    <div class="convert__item padding-all-10">
+                        <div class="convert__item-img">
+                            <img src="~/Content/imageIllustration/@item.cover_image" alt="">
+                        </div>
+                        <div class="convert__item-info">
+                            <h5 class="convert__item-name">
+                                <a href="/Story/Detail?id=@item.story_id">@item.title</a>
+                            </h5>
+                            <span>
+                                Lần cuối  @item.newtimeUpdate
+                            </span>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+        </div>
+    </div>
+</div>

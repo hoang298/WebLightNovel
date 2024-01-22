@@ -1,0 +1,37 @@
+﻿@model List<WebLightNovel.Models.SystemModel.SeriesViewModel>
+@{
+    ViewBag.Title = "Series";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Danh sách truyện đã đăng
+            </div>
+            <div class="panel-body">
+              
+                <table class="table">
+                    <tbody >
+                        <tr col-md-12>
+                            <th class="col-md-6">Tên truyện</th>
+                            <th class="col-md-2">Nhóm dịch</th>
+                            <th class="col-md-2">Tùy chọn</th>
+                        </tr>
+                        @foreach (var item in Model)
+                        {
+                            <tr col-md-12>
+                                <td class="col-md-6" >@item.story_name</td>
+                                <td class="col-md-2" >@item.trans_name</td>
+                                <td class="col-md-2" ><a href="/System/Story?story_id=@item.story_id">Quản lý truyện</a></td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

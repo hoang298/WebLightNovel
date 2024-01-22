@@ -1,0 +1,272 @@
+﻿@model WebLightNovel.Models.Account.UserHeaderModel
+@using WebLightNovel.Models.Account
+@using Microsoft.AspNet.Identity
+@{
+    TempData["url"] = Request.Url.ToString();// lay dia chi trang hien tai
+    List<WebLightNovel.Models.Member.NotifyViewModel> list_notify = ViewBag.listNotify as List<WebLightNovel.Models.Member.NotifyViewModel>;
+}
+<header class="header">
+    <nav class="header__navbar">
+        <div class="header__navbar-wrapper">
+            <div class="header__navbar-container">
+                <div class="header__navbar-logo">
+                    <a class="navbar__wrapper-logo" href="/" title="Trang chủ"><img src="~/avatar/logo-9.png" class="logo" alt=""></a>
+                </div>
+                <form action="/Search/Search" method="get">
+                    <div class="header__navbar-search-wrapper">
+                        <div class="header__navbar-search">
+                            <input name="key" autocomplete="off" id="input__searchStory" class="header__navbar-input" type="text" placeholder="Tìm truyện">
+                            <button class="btn__search">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+
+                        </div>
+                        <div class="suggestsearch">
+                            <ul class="suggestsearch__list">
+                            </ul>
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+            <ul class="header__navbar-login">
+                @if (!Request.IsAuthenticated)
+                {
+                    <li class="header__navbar-item header__navbar-separate">
+                        <a href="/Account/Login" class="">Đăng nhập</a>
+                    </li>
+                    <li class="header__navbar-item">
+                        <a>Đăng ký</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="header__navbar-user">
+                        <a href="/Member/Follow" class="">
+                            <i class="fas fa-heart"></i>
+                            @if (Model.total_follow > 0)
+                            {
+                                <span class="noti-unread1">@Model.total_follow</span>
+                            }
+                        </a>
+                    </li>
+                    <li class="header__navbar-user">
+                        <a id="list_notify" href="#">
+                            <i id="icon_notify" class="fas fa-bell"></i>
+                            @if (Model.total_notify > 0)
+                            {
+                                <span id="total_notify" class="noti-unread1">@Model.total_notify</span>
+                            }
+                            <ul class="header__navbar-notify-list">
+                                @if (ViewBag.listNotify != null)
+                                {
+                                    <li style="margin-top: 10px;">
+                                        <a style="text-align:center;font-size:20px;" href="/Member/Notify">
+                                            <span class="overflowContent" style="padding: 0 5px;">Xem tất cả</span>
+                                        </a>
+                                    </li>
+                                    foreach (var item in list_notify)
+                                    {
+                                        <li class="header__navbar-notify-item">
+                                            <a class="header__navbar-notify-link" href="@item.url_notify">
+                                                <div class="noti-item_img"><img src="/avatar/@item.senderAvatar" class="notify_avatar" /></div>
+                                                <span class="overflowContent" style="padding: 0 5px;">@item.content</span>
+                                                <span>
+                                                    @item.time
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    <li style="text-align:center"><h4>Không có thông báo nào</h4></li>
+                                }
+
+
+
+                            </ul>
+                        </a>
+                    </li>
+                    <li class="header__navbar-user">
+                        @if (User.Identity.GetUserAvatar().StartsWith("http"))
+                        {
+                            <img id="avatar_user" src="@User.Identity.GetUserAvatar()" alt="Alternate Text" />
+                        }
+                        else
+                        {
+                            <img id="avatar_user" src="~/avatar/@User.Identity.GetUserAvatar()" alt="Alternate Text" />
+
+                        }
+                        <ul class="header__navbar-user-list">
+                            <li class="header__navbar-user-item">
+                                <a href="/thanh-vien/@User.Identity.GetUserId()">
+                                    <i class="fas fa-user"></i>
+                                    <span>Tài khoản</span>
+                                </a>
+                            </li>
+                            <li class="header__navbar-user-item">
+                                <a href="/Home/History">
+                                    <i class="fas fa-history"></i>
+                                    <span>Lịch sử</span>
+                                </a>
+                            </li>
+                            @* <li class="header__navbar-user-item">
+                                    <a href="#">
+                                        <i class="fas fa-bookmark"></i>
+                                        <span>Đánh dấu</span>
+                                    </a>
+                                </li>*@
+                            <li class="header__navbar-user-item">
+                                <a href="/Member/Follow">
+                                    <i class="fas fa-heart"></i>
+                                    <span>Kệ sách</span>
+                                </a>
+                            </li>
+                            <li class="header__navbar-user-item">
+                                <a href="/Member/Messenger">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Tin nhắn</span>
+                                </a>
+                            </li>
+                            @* <li class="header__navbar-user-item">
+                                    <div class="nightmode-toggle">
+                                        <i class="fas fa-moon"></i>
+                                        <span>Nền tối</span>
+                                        <div class="toggle-icon">
+                                            <i class="fas fa-toggle-off"></i>
+                                        </div>
+                                    </div>
+                                </li>*@
+                            <li class="header__navbar-user-item">
+                                <a href="/System/">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Hệ thống</span>
+                                </a>
+                            </li>
+                            <li class="header__navbar-user-item">
+                                @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        <span>Thoát</span>
+                                    </a>
+                                }
+
+                            </li>
+                        </ul>
+                    </li>
+                }
+
+            </ul>
+        </div>
+
+    </nav>
+    <nav class="header__main">
+        <div class="header__main-content">
+
+            <ul class="header__main-list">
+                <li class="header__main-item"><a href="/Home/Convert_Story?type=0">Sáng tác</a> </li>
+                <li class="header__main-item"><a href="/Home/Convert_Story?type=2">Máy dịch</a></li>
+                <li class="header__main-item"><a href="/Home/Convert_Story?type=1">Truyện dịch</a></li>
+                @*  <li class="header__main-item ">
+                        <a href="">Thảo luận</a>
+                    </li>*@
+                @Html.Action("RenderGenres", "Home")
+                <li class="header__main-item"><a href="/Story/ListManga?sort=update&page=1">Manga</a></li>
+                <li class="header__main-item"><a href="/Search/SearchAdvanced">Tìm kiếm nâng cao</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+@*<div class="banner-image" style="padding:0 10%; background-color:rgba(232,233,236,1)">
+        <img  style="width:100%;height:200px" src="~/avatar/arifuretaLN-banner-1.jpg" />
+    </div>*@
+
+<script>
+    const inputSearch = document.getElementById('input__searchStory');
+    const suggest__list = document.getElementsByClassName('suggestsearch__list')[0];      
+    inputSearch.oninput = function () {
+        let input_value = inputSearch.value;
+        let timeout = setTimeout(function () {
+            if (input_value == inputSearch.value) {
+                    suggest__list.style.display = 'block';
+                    let key = inputSearch.value;
+                    $.ajax({
+                        url: '@Url.Action("Search_Ajax", "Story")',
+                        data: { key: key },
+                        success: function (data) {
+                            $('.suggestsearch__list').html(data);
+                        }
+                    });
+            }
+        },500)
+    }
+
+    suggest__list.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+    });
+    inputSearch.addEventListener('focusout', function () {
+        suggest__list.style.display = 'none';
+    })
+    const list_genres = document.getElementsByClassName('header__listgenres')[0];
+    const genres = document.getElementsByClassName('genres')[0];
+    genres.addEventListener('mouseover', function () {
+        list_genres.style.display = 'flex';
+        genres.style.backgroundColor = 'white';
+    })
+    list_genres.addEventListener('mousedown', function (e) {
+        e.preventDefault();
+    });
+    genres.addEventListener('mouseout', function () {
+        list_genres.style.display = 'none';
+        genres.style.backgroundColor = '#ebebeb';
+    })
+
+    const avatar_user = document.getElementById('avatar_user');
+    const user_option = document.getElementsByClassName('header__navbar-user-list')[0];
+    const user_item = document.getElementsByClassName('header__navbar-user-item');
+    if (avatar_user != undefined) {
+        avatar_user.addEventListener('click', function () {
+            //user_option.style.display = 'block';
+            $(user_option).toggle();
+        });
+    }
+    
+    $(document).on('click', function (e) {//tìm user_item gần vị trí click chuột nhất
+        if ($(e.target).closest(user_item).length == 0 && $(e.target).closest(avatar_user).length == 0) {
+            $(user_option).css('display', 'none');
+        }
+    });
+
+    const icon_notify = document.getElementById('icon_notify');
+    const list_notify = document.getElementsByClassName('header__navbar-notify-list')[0];
+    const notify_item = document.getElementsByClassName('header__navbar-notify-item');
+    if (icon_notify != undefined) {
+        icon_notify.addEventListener('click', function () {
+            $(list_notify).toggle();
+            const total_notify = document.getElementById('total_notify');
+            if (total_notify != null) {
+                $.ajax({
+                    url: "/Member/ConfirmNotify",
+                    success: function (data) {
+                        if (data == "true")
+                            total_notify.remove();
+                        else
+                            alert("Đã có lỗi xảy ra");
+                    }
+                });
+            }
+
+        })
+    }
+    $(document).on('click', function (e) {
+        if ($(e.target).closest(notify_item).length == 0 && $(e.target).closest(icon_notify).length == 0) {
+            $(list_notify).css('display', 'none');
+        }
+    });
+</script>

@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link href="~/fonts/fontawesome-free-6.3.0-web/css/all.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="https://docln.net/img/favicon.png">
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+    <link href="~/css/toast.css" rel="stylesheet" />
+    <title>Trang chủ - Cổng đọc Light Novel</title>
+</head>
+<body>
+    <div class="app">
+        @Html.Action("InfoUser", "Home")
+        @RenderBody()
+    </div>
+</body>
+</html>
+

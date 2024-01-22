@@ -1,0 +1,166 @@
+﻿@model WebLightNovel.Models.SystemModel.CreateStoryViewModel
+@{
+    ViewBag.Title = "CreateStory";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+}
+@if (ViewBag.ErrorNotTrans != null)
+{
+    <h5>Bạn chưa tạo nhóm nào, hãy tạo nhóm để có thể thực hiện chức năng đăng truyện</h5>
+    <h5><a href="/">Về trang chủ</a></h5>
+    <h5><a href="/System/CreateTranslation">Đến trang tạo nhóm</a></h5>
+}
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Series</div>
+                    <div class="panel-body">
+                        <div class="alert alert-info">
+                            Quy định chung khi đăng truyện <a class="alert-link" href="/thao-luan/20-quy-dinh-chung-doi-voi-cac-du-an-dang-tai-cong-light-novel-bao-gom-truyen-dichconvert-va-oln" rel="nofollow" target="_blank">tại đây</a><br>
+                            Quy định về Truyện sáng tác <a class="alert-link" href="/thao-luan/77-quy-dinh-doi-voi-oln" rel="nofollow" target="_blank">tại đây</a><br><br>
+                            Cần đọc <a class="alert-link" href="/thao-luan/368-huong-dan-dang-truyen" rel="nofollow" target="_blank">Hướng dẫn đăng truyện</a>
+                        </div>
+                        <form method="post" action="/System/CreateStory" enctype="multipart/form-data">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-7 text-right">Tiêu đề</label>
+                                <div class="col-md-8">
+                                    <input required type="text" class="form-control" name="title" value="">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="col-md-2 control-label pt-7 text-right">Ảnh minh họa</label>
+                                <div class="col-md-8">
+                                    <input style="border:none" type="file" name="file" value="">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-7 text-right">Tác giả</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="author_name" value="">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label class="col-md-2 control-label pt-7 text-right">Họa sĩ</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="artist_name" value="">
+                                </div>
+                            </div>
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-5 text-right">Loại truyện</label>
+                                <div class="col-md-10">
+                                    <select class="input-sm" name="type_story" id="select-type">
+                                        <option value="1">Truyện dịch</option>
+                                        <option value="2">Truyện convert</option>
+                                        <option value="0">Truyện sáng tác</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-5 text-right">Nhóm dịch</label>
+                                <div class="col-md-10">
+                                    <select class="input-sm" name="trans_id">
+                                        @foreach (var item in Model.listTrans)
+                                        {
+                                            <option value="@item.translation_id">@item.name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-7 text-right">Thể loại</label>
+                                <div class="col-md-8">
+                                    @foreach (var item in Model.listGenres)
+                                    {
+                                        <label class="checkbox-inline" style="width: 130px">
+                                            <input type="checkbox" name="genres1[]" value="@item.name">@item.name
+                                        </label>
+                                    }
+                                    <input id="genres" style="display:none;" type="text" name="genres" value="av" />
+                                </div>
+                            </div>
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label text-right">Tóm tắt</label>
+                                <div class="col-md-10">
+                                    <textarea name="synopsis" style="height:200px;padding-left:5px" class="col-md-8">
+                                </textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group clearfix required">
+                                <label class="col-md-2 control-label pt-5 text-right">Nguồn dịch</label>
+                                <div class="col-md-10">
+                                    <input class="input-sm" type="text" name="translationSource" value="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        Thêm truyện
+                                    </button>
+                                    <a href="javascript: history.back()" class="btn btn-warning">
+                                        Quay lại
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div id="toast"></div>
+<script src="~/Scripts/Toast/Toast.js"></script>
+@if (TempData["CreateStory"] != null)
+{
+    <script>
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã thêm truyện thành công vui lòng chờ Admin xét duyệt.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        showSuccessToast();
+    </script>
+}
+@if (TempData["ErrorCreateStory"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Thêm truyện thất bại vui lòng thử lại",
+                type: "error",
+                duration: 5000
+            });
+        }
+        showErrorToast();
+    </script>
+}
+@if (TempData["ErrorImage"] != null)
+{
+    <script>
+        alert("Tệp hình ảnh bạn tải lên không hợp lệ vui lòng kiểm tra lại");
+    </script>
+}
+<script>
+    const list_genres = document.getElementsByName('genres1[]');
+    let genres = document.getElementById('genres');
+    let list = "";
+    for (let i = 0; i < list_genres.length; i++) {
+        list_genres[i].addEventListener('change', function () {
+            if (list_genres[i].checked == true) {
+                list_genres[i].setAttribute('disabled', '');
+                list = list + list_genres[i].value + ",";
+                genres.value = list;
+            }
+        })
+    }
+</script>

@@ -1,0 +1,45 @@
+﻿@model List<WebLightNovel.Models.Entity.Volume>
+@{
+    ViewBag.Title = "ListVolume";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+}
+
+<h2>ListVolume</h2>
+<div class="admin-content-right">
+    <div class="admin-content-right-sp-list">
+        <h4>Danh sách Volume</h4>
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Mã Truyện</th>
+                        <th class="col-md-5">Tên Volume</th>
+                        <th class="col-md-2">Ảnh minh họa</th>
+                        <th class="col-md-2">Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody class="list__story">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th>@i</th>
+                            <td>@item.story_id</td>
+                            <td>@item.story_name</td>
+                            <td><img src="~/image_vol/@item.volumeImg" /></td>
+                            <td>
+                                <a href="/Admin/EditVolume?id=@item.volume_id" class="btn btn-primary btn-icon"><i class="fa fa-edit"></i></a>
+                                <a href="/Admin/DeleteVolume?id=@item.volume_id" class="btn btn-danger btn-icon"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

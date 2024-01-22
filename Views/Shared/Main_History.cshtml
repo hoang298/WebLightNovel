@@ -1,0 +1,32 @@
+﻿@model List<WebLightNovel.Models.ModelHistoryStory.ModelHistory>
+<ul class="list__manga-content">
+    @foreach (var item in Model)
+    {
+        <li class="history__item">
+            <div class="history__item-wrapper">
+                <a href="/Story/Detail?id=@item.story_id">
+                    <img src="~/Content/imageIllustration/@item.image" alt="">
+                </a>
+            </div>
+            <div class="history__item-caption">
+
+                <div class="history__item-caption-title">
+                    <a class="overflowContent" href="/Story/Detail?id=@item.story_id">@item.story_name</a>
+                </div>
+                <div class="history__item-option">
+                    <a class="history__item-name overflowContent" href="/Story/DetailChapter?id=@item.chapter_id">
+                        @item.chapterName
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                    <a class="history__btn-delete" href="#">
+                        <i class="fa fa-times"></i>
+                        Xóa
+                    </a>
+
+                </div>
+            </div>
+        </li>
+    }
+
+
+</ul>

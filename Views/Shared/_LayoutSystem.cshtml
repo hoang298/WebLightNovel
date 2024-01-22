@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="NoIndex, NoFollow">
+    <title>Bảng điều khiển</title>
+    <link rel="shortcut icon" href="https://docln.net/img/favicon.png">
+    <link href="~/css/system.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/toast.css" rel="stylesheet" />
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-default" style="z-index: 999">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle Navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/System">Bảng điều khiển</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav ">
+                    <li><a href="/"><i style="font-size: 18px;" class="fas fa-home"></i><span class="hidden-md hidden-lg"> Cổng Light Novel</span></a></li>
+                    <li><a href="/System/CreateStory" style="color: red">Thêm Truyện</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #10b591">Truyện dịch <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/System/Series?type=translation&of=self">Truyện đã đăng</a></li>
+                            <li><a href="/System/Series?type=translation&of=shared">Truyện tham gia</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #e3953e">Convert <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/System/Series?type=convert&of=self">Convert đã đăng</a></li>
+                            <li><a href="/System/Series?type=convert&of=shared">Convert tham gia</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="color: #1389c6">Sáng tác <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/System/Series?type=original&of=self">OLN đã đăng</a></li>
+                            <li><a href="/System/Series?type=original&of=shared">OLN tham gia</a></li>
+                        </ul>
+                    </li>
+                    @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Thảo luận <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="https://docln.net/action/page/create">Thêm thảo luận</a></li>
+                            <li><a href="https://docln.net/action/page/mypages">Thảo luận của bạn</a></li>
+                        </ul>
+                    </li>*@
+                   @* <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tiện ích <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="https://docln.net/action/genre">Thể loại</a></li>
+                            <li><a href="https://docln.net/action/page_category">Thư viện</a></li>
+                            <li><a href="https://docln.net/action/image">Minh họa</a></li>
+                        </ul>
+                    </li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Nhóm dịch <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/System/Group">Nhóm của bạn</a></li>
+                            <li><a href="/System/SearchGroup">Tìm kiếm nhóm</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user"> </span><span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a>Nguyễn Hữu Hoàng</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="https://docln.net/action/profile">Đổi Thông Tin</a></li>
+                            <li><a href="https://docln.net/action/password">Đổi Mật Khẩu</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="https://docln.net/action/email">Đổi Email</a></li>
+                            <li><a href="https://docln.net/action/username">Đổi Username</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="https://docln.net/logout">Thoát</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    @RenderBody()
+
+
+</body>
+<div style="position: absolute; top: 0px; display: block !important;"></div>
+</html>

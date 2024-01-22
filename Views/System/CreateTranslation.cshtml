@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "CreateTranslation";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+
+
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhóm
+                    <div style="float: right">
+                        <a href="https://docln.net/action/group/create">[Thêm]</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <form role="form" method="POST" action="/System/CreateTranslation">
+                        <input type="hidden" name="_token" value="w0y4ReA87zp5qahdYgaBeLp0uqIQqjyfaQuJeAkb">
+                        <div class="form-group clearfix required">
+                            <label class="col-md-2 control-label pt-7 text-right">Tên nhóm</label>
+                            <div class="col-md-8">
+                                <input required type="text" class="form-control" name="name" value="">
+                            </div>
+                        </div>
+                        <div class="form-group clearfix required">
+                            <label class="col-md-2 control-label pt-7 text-right">Giới thiệu</label>
+                            <div class="col-md-8">
+                                <textarea required name="description" class="col-md-12"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10 col-md-offset-2">
+                                <button type="submit" class="btn btn-primary">
+                                    Thêm
+                                </button>
+                                <a href="/System" class="btn btn-warning">
+                                    Quay lại
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+<script src="~/Scripts/Toast/Toast.js"></script>
+@if (TempData["CreateTranslation"] != null)
+{
+    <script>
+        function showSuccessToast() {
+            toast({
+                title: "Thành công!",
+                message: "Bạn đã tạo nhóm thành công.",
+                type: "success",
+                duration: 5000
+            });
+        }
+
+        showSuccessToast();
+    </script>
+}
+@if (TempData["ErrorCreateTrans"] != null)
+{
+    <script>
+        function showErrorToast() {
+            toast({
+                title: "Thất bại!",
+                message: "Tên nhóm đã tồn tại",
+                type: "error",
+                duration: 5000
+            });
+        }
+            showErrorToast();
+    </script>
+}
+

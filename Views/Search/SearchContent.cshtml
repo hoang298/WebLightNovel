@@ -1,0 +1,223 @@
+﻿@model List<WebLightNovel.Models.Entity.ImageChapter>
+<div class="container">
+    <div class="content">
+        <div class="content__update">
+            <div class="content__update-wrapper">
+                <div class="content__title">
+                    <h2>
+                        Kết quả tìm kiếm
+                    </h2>
+                </div>
+                <div class="list__manga-wrapper">
+                    @foreach (var item in Model)
+                    {
+                        <div class="manga__item">
+                            <div class="manga__item-img">
+                                <a href="/Story/DetailChapter?id=@item.chapter_id">
+                                    <img src="~/image_chapter/" alt="">
+                                </a>
+                                <div class="manga__item-view">
+                                    <div class="view">
+                                        <i class="far fa-eye fa-sm" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                    <div class="view">
+                                        <i class="far fa-comment" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                    <div class="view">
+                                        <i class="far fa-heart" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="manga__item-caption">
+                               @* <h3 class="manga__item-title">
+                                    <a href="/Story/DetaiChapter?id=@item.chapter.chapter_id"> @item.story_name</a>
+                                </h3>
+                                <ul class="manga__item-history">
+                                    <li class="item__history-chapter ">
+                                        <a class="overflowContent" href="/Story/DetailChapter?id=@item.chapter.chapter_id">@item.chapter.chapter_name</a>
+                                        <span>
+                                            @{Html.RenderAction("ConvertTimeChapter", "Home", new { dateTime = item.chapter.update_day });}
+                                        </span>
+                                    </li>
+
+                                </ul>*@
+                            </div>
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+            <div class="manga__information">
+                <div class="list__manga-history">
+                    <div class="history__title">
+                        <h2>Lịch sử đọc truyện</h2>
+                        <a href="/Home/HistoryStory">Xem tất cả</a>
+                    </div>
+                    <ul class="list__manga-content">
+                        @*<li class="history__item">
+                                <div class="history__item-wrapper">
+                                    <a href="">
+                                        <img src="" alt="">
+                                    </a>
+                                </div>
+                                <div class="history__item-caption">
+                                    <div class="history__item-caption-title">
+                                        <a href="">Nhà có 5 nàng dâu</a>
+                                    </div>
+                                    <div class="history__item-option">
+                                        <a href="">
+                                            Đọc tiếp chapter 30
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                        <a class="history__btn-delete" href="">
+                                            <i class="fa fa-times"></i>
+                                            Xóa
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>*@
+
+                    </ul>
+
+                </div>
+                <div class="manga__rank">
+                    <div class="rank__title">
+                        <ul class="list__rank-title">
+                            <li class="list__rank-title-item">
+                                <a href="">Top Ngày</a>
+                            </li>
+                            <li class="list__rank-title-item">
+                                <a href="">Top Tuần</a>
+                            </li>
+                            <li class="list__rank-title-item">
+                                <a href="">Top Tháng</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="list__rank-content">
+                        <li class="rank__item">
+                            <span class="rank_number">01</span>
+                            <div class="rank__item-wrapper">
+                                <a href="">
+                                    <img src="./assets/img/nha_co_5_nang_dau_-_tap_1_a2ae26f9f5da47088e5d9dfa2be3faa0_1024x1024.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="rank__item-caption">
+                                <div class="rank__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="rank__item-option">
+                                    <a href="">
+                                        Chapter 30
+                                    </a>
+                                    <div class="rank__view">
+                                        <i style="font-size: 16px;" class="far fa-eye fa-sm"></i>
+                                        <span style="font-size: 16px">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="rank__item">
+                            <span class="rank_number">01</span>
+                            <div class="rank__item-wrapper">
+                                <a href="">
+                                    <img src="./assets/img/nha_co_5_nang_dau_-_tap_1_a2ae26f9f5da47088e5d9dfa2be3faa0_1024x1024.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="rank__item-caption">
+                                <div class="rank__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="rank__item-option">
+                                    <a href="">
+                                        Chapter 30
+                                    </a>
+                                    <div class="rank__view">
+                                        <i style="font-size: 16px;" class="far fa-eye fa-sm"></i>
+                                        <span style="font-size: 16px">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="rank__item">
+                            <span class="rank_number">02</span>
+                            <div class="rank__item-wrapper">
+                                <a href="">
+                                    <img src="./assets/img/nha_co_5_nang_dau_-_tap_1_a2ae26f9f5da47088e5d9dfa2be3faa0_1024x1024.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="rank__item-caption">
+                                <div class="rank__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="rank__item-option">
+                                    <a href="">
+                                        Chapter 30
+                                    </a>
+                                    <div class="rank__view">
+                                        <i style="font-size: 16px;" class="far fa-eye fa-sm"></i>
+                                        <span style="font-size: 16px">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="rank__item">
+                            <span class="rank_number">03</span>
+                            <div class="rank__item-wrapper">
+                                <a href="">
+                                    <img src="./assets/img/nha_co_5_nang_dau_-_tap_1_a2ae26f9f5da47088e5d9dfa2be3faa0_1024x1024.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="rank__item-caption">
+                                <div class="rank__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="rank__item-option">
+                                    <a href="">
+                                        Chapter 30
+                                    </a>
+                                    <div class="rank__view">
+                                        <i style="font-size: 16px;" class="far fa-eye fa-sm"></i>
+                                        <span style="font-size: 16px">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="rank__item">
+                            <span class="rank_number">04</span>
+                            <div class="rank__item-wrapper">
+                                <a href="">
+                                    <img src="./assets/img/nha_co_5_nang_dau_-_tap_1_a2ae26f9f5da47088e5d9dfa2be3faa0_1024x1024.jpg" alt="">
+                                </a>
+                            </div>
+                            <div class="rank__item-caption">
+                                <div class="rank__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="rank__item-option">
+                                    <a href="">
+                                        Chapter 30
+                                    </a>
+                                    <div class="rank__view">
+                                        <i style="font-size: 16px;" class="far fa-eye fa-sm"></i>
+                                        <span style="font-size: 16px">30</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "HistoryStory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="content">
+        <div class="content__update padding-all-10">
+            <div class="content__update-wrapper">
+                <div class="content__title">
+                    <h2>
+                        Lịch sử đọc truyện
+                    </h2>
+                </div>
+                <div class="historyStory__option">
+                    <input checked="true" id="browser" type="radio" name="name" value="" /><label>Theo trình duyệt</label>
+                    <input id="account" type="radio" name="name" value="" /><label>Theo tài khoản</label>
+                </div>
+                <div class="list__manga-wrapper">
+                </div>
+            </div>          
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/CookieLocalStore/History/RenderHistory.js"></script>

@@ -1,0 +1,529 @@
+﻿@model List<WebLightNovel.Models.Detail.VolumeViewModel>
+@using WebLightNovel.Models.Account
+@using Microsoft.AspNet.Identity
+@{
+    var story = ViewBag.story as WebLightNovel.Models.Detail.StoryDetailViewModel;
+    var listGenres = ViewBag.ListGenres as List<WebLightNovel.Models.Detail.GenreViewModel>;
+    var listParent = ViewBag.listParent as List<WebLightNovel.Models.Detail.CommentViewModel>;
+    var commentNotify = ViewBag.CommentNoitfy as WebLightNovel.Models.Detail.CommentViewModel;
+    string user_id = "";
+    string avatar = "";
+    string name = "";
+    var ModelTrans = ViewBag.ModelTrans as WebLightNovel.Models.Detail.TransViewModel;
+    if (User.Identity.IsAuthenticated)
+    {
+        user_id = User.Identity.GetUserId();
+        avatar = User.Identity.GetUserAvatar();
+        name = User.Identity.GetUserNickName();
+    }
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@story.title</title>
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link href="~/css/detail.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="https://docln.net/img/favicon.png">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        chapter__item > a:visited {
+            color: gray;
+            text-decoration: line-through;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-6MJCMFB53J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-6MJCMFB53J');
+    </script>
+</head>
+<body>
+    <div class="app">
+        @Html.Action("InfoUser", "Home");
+        <div class="detail__container">
+            <div class="category__title">
+                <div class="category__title-wrapper">
+                    <span class="category__title-item">
+                        <a href="">
+                            <i class="fas fa-home"></i>
+                        </a>
+                    </span>
+                    <span class="category__title-item">
+                        <i class="fas fa-chevron-right"></i>
+                    </span>
+                    <span class="category__title-item">
+                        <a href="">@story.type_name</a>
+                    </span>
+                </div>
+            </div>
+            <div class="detail__container-wrapper">
+                <div class="detail__container-content">
+                    <div class="detail__main">
+                        <div class="detail__main-product">
+                            <div class="detail__img-wrapper padding-l-r-10">
+                                <div class="detail__img-content">
+                                    <div class="detail__img-title">
+                                        <h3>@story.type_name</h3>
+                                    </div>
+                                    <div class="detail__img">
+                                        <img src="~/Content/imageIllustration/@story.cover_image" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="detail__information-wrapper">
+                                <div class="detail__information-content">
+                                    <div class="detail__information-title" data-story_id="@story.story_id">
+                                        <a href="">@story.title</a>
+                                    </div>
+                                    <div class="detail__information-bonus">
+                                        <div class="detail__information-list">
+                                            @foreach (var item in listGenres.Take(6))
+                                            {
+                                                <a class="detail__category-item" href="@item.link_genre">@item.name</a>
+                                            }
+                                            @if (listGenres.Count > 6)
+                                            {
+                                                <a id="see-more-genre" class="detail__category-item" href="#"><i class="fas fa-ellipsis-h"></i></a>
+                                                foreach (var item in listGenres.Skip(6))
+                                                {
+                                                    <a style="display:none" class="detail__category-item item-genre-none" href="@item.link_genre">@item.name</a>
+                                                }
+                                            }
+
+                                        </div>
+                                        <div class="detail__infor-item">
+                                            <span class="item__name">Tác giả:</span>
+                                            <span class="item__value">@story.author_name</span>
+                                        </div>
+                                        <div class="detail__infor-item">
+                                            <span class="item__name">Họa sĩ:</span>
+                                            <span class="item__value">@story.artist_name</span>
+                                        </div>
+                                        <div class="detail__infor-item">
+                                            <span class="item__name">Tình trạng:</span>
+                                            <span class="item__value">@story.state_name</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail__infor-option">
+                                        <div class="option__item">
+                                            @if (ViewBag.stateFollow == 0)
+                                            {
+                                                <a data-story_id="@story.story_id" id="story_follow" href="">
+                                                    <span>
+                                                        <i id="icon_follow" style="color: deeppink;" class="fa-heart far"></i>
+                                                    </span>
+                                                    <span>@story.follow_views</span>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a data-story_id="@story.story_id" id="story_follow" href="">
+                                                    <span>
+                                                        <i id="icon_follow" style="color: deeppink;" class="fa-heart fas"></i>
+                                                    </span>
+                                                    <span>@story.follow_views</span>
+                                                </a>
+                                            }
+                                        </div>
+                                        <div class="option__item">
+                                            <a href="">
+                                                <span>
+                                                    <i style="color: deeppink;" class="far fa-star"></i>
+                                                </span>
+                                                <span>Đánh giá</span>
+                                            </a>
+                                        </div>
+                                        <div class="option__item">
+                                            <a href="">
+                                                <span>
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                                <span>Mục lục</span>
+                                            </a>
+                                        </div>
+                                        <div class="option__item">
+
+                                            <a href="">
+                                                <span>
+                                                    <i class="fas fa-comments"></i>
+                                                </span>
+                                                <span>Bàn luận</span>
+                                            </a>
+                                        </div>
+                                        <div class="option__item">
+                                            <a href="">
+                                                <span>
+                                                    <i class="fas fa-share-alt"></i>
+                                                </span>
+                                                <span>Chia sẻ</span>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="detail__infor-view">
+                            <div class="detail__infor-view-1 padding-t-b-10">
+                                <div class="static__name">Lần cuối</div>
+                                <div class="static__value">8 giờ</div>
+                            </div>
+                            <div class="detail__infor-view-1 padding-t-b-10">
+                                <div class="static__name">Số từ</div>
+                                <div class="static__value">@story.total_word</div>
+                            </div>
+                            <div class="detail__infor-view-1 padding-t-b-10">
+                                <div class="static__name">Đánh giá</div>
+                                <div class="static__value">@story.comment_views</div>
+                            </div>
+                            <div class="detail__infor-view-1 padding-t-b-10">
+                                <div class="static__name">Lượt xem</div>
+                                <div class="static__value">@story.total_views</div>
+                            </div>
+                        </div>
+                        @*<div class="fact__item padding-all-10">
+                                <div class="fact__name">Tên khác</div>
+                                <div class="fact__value">奴隷からの期待と評価のせいで搾取できないのだが</div>
+                                <div class="fact__value">I Can't Exploit it Because of the Expectations and Evaluations From Slaves</div>
+                            </div>*@
+                        <div class="detail__summary padding-all-10">
+                            <div class="detail__summary-title">Tóm tắt</div>
+                            <div class="detail__summary-content">
+                                <p>
+                                    @story.synopsis
+                                </p>
+                            </div>
+                        </div>
+                        <div class="detail__list-vol">
+                           @* @foreach (var item in Model)
+                            {
+                                <div class="list__vol-wrapper">
+                                    <div class="vol__title">
+                                        <span>@item.name_vol</span>
+                                        <span style="color: red;">*</span>
+                                    </div>
+                                    <div class="list__vol-item">
+                                        <div class="vol__item-img padding-l-r-10">
+                                            <a href="">
+                                                <img class="vol__avatar-img" src="~/Content/imageVolume/@item.img_vol" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="list__chapter">
+                                            @foreach (var item1 in item.list_chap.Take(5))
+                                            {
+                                                <div class="chapter__item overflowContent">
+                                                    <a class="overflowContent" href="/truyen/@item1.link_chapter">@item1.name</a>
+                                                    <span>@item1.newtimeUpdate</span>
+                                                </div>
+
+                                            }
+                                            <div class="mobile-more">
+                                                <div class="see-more-chapter">
+                                                    <span>Xem tiếp (5 chương)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            }*@
+
+
+                        </div>
+                        @*<div class="translation__list">
+                                <div class="translation__list-title">Nhóm khác dịch</div>
+                                <div class="translation__list-main">
+                                    <div class="translation__list-img">
+                                        <img src="./assets/img/nha_co_5_nang_dau_-_tap_2_-_bia_ao_8b62c333bf9440ef92811cbb294d8fd9_1024x1024.jpg" alt="">
+                                    </div>
+                                    <div class="translation__list-content padding-l-r-10">
+                                        <h5 class="translation__list-top"><a href="">Nhóm dịch: Hako Translation</a></h5>
+                                        <div class="translation__list-bottom">
+                                            <div>Chương 01 - Thân quyến và Ma Vương</div>
+                                            <div class="">Tập 2</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="list-comment padding-l-r-10">
+
+                            @foreach (var item in listParent)
+                            {
+                            <div data-id-parent="@item.comment_id" id="@item.comment_id" class="ln-comment-group">
+                                <div class="ln-comment-item">
+                                    <div class="ln-comment-user-avt">
+                                        <img src="~/avatar/@item.avatar" alt="Avatar" />
+                                    </div>
+                                    <div class="ln-comment-info">
+                                        <div class="ln-comment-wrapper">
+                                            <div style="" class="ln-comment-user-name">
+                                                <div>
+                                                    <a>@item.user_name</a>
+                                                </div>
+                                                <div class="self-center">
+                                                    <div style="display: flex; line-height: 20px;" class="flex gap-1 rounded-sm bg-[#49d0b2]/50 dark:bg-[#36a189]/50 px-1.5 py-0.5 align-middle text-[10px] font-bold text-[#36a189] dark:text-[#eaeaea]">
+                                                        <img class="my-auto h-[14px]" src="~/imageIcon/trans5.png">
+                                                        <div  class="leading-4">TRANS</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div contenteditable="false" class="ln-comment-text">@item.content</div>
+                                        </div>
+                                       
+                                        <div class="visible-toolkit">
+                                            <span class="ln-comment-time"><a style="color:#9191c5" href="">@item.time</a></span>
+                                            <a data-user_id="@item.user_id" name="@item.user_name" class="ln-comment-text-reply">Trả lời </a>
+                                        </div>
+                                    </div>
+                                    <div class="ln-comment-menu">
+                                        <div class="ln-comment-icon">
+                                            <i class="fas fa-angle-down"></i>
+                                        </div>
+                                        <div data-id-comment="@item.comment_id" data-user_id="@item.user_id" class="ln-comment-edit">
+                                            <span class="ln-comment-fixed-span ln-comment-options">
+                                                <i class="fas fa-edit"> </i>
+                                                Ghim bình luận
+                                            </span>
+                                            <span class="ln-comment-edit-span ln-comment-options">
+                                                <i class="fas fa-edit"> </i>
+                                                Chỉnh sửa
+                                            </span>
+                                            <span class="ln-comment-delete ln-comment-options">
+                                                <i style="width:16px" class="fas fa-times"> </i>
+                                                Xóa
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (commentNotify != null)
+                                {
+                                    <div data-id-parent="@item.comment_id" id="@commentNotify.comment_id" class="ln-comment-reply">
+                                        <div class="ln-comment-user-avt">
+                                            <img src="~/avatar/@commentNotify.avatar" alt="Avatar" />
+                                        </div>
+                                        <div class="ln-comment-info">
+                                            <div class="ln-comment-wrapper">
+                                                <div class="ln-comment-user-name">
+                                                    <a>@commentNotify.user_name</a>
+                                                </div>
+                                                <div contenteditable="false" class="ln-comment-text">@commentNotify.content</div>
+                                            </div>
+                                            <div class="visible-toolkit">
+                                                <span style="color:#9191c5" class="ln-comment-time">@commentNotify.time</span>
+                                                <a id="@commentNotify.user_id" name="@commentNotify.user_name" class="ln-comment-text-reply">Trả lời</a>
+                                            </div>
+                                        </div>
+                                        <div class="ln-comment-menu">
+                                            <div class="ln-comment-icon">
+                                                <i class="fas fa-angle-down"></i>
+                                            </div>
+                                            <div data-id-comment="@commentNotify.comment_id" data-user_id="@commentNotify.user_id" class="ln-comment-edit">
+                                                <span class="ln-comment-edit-span">
+                                                    <i class="fas fa-edit"> </i>
+                                                    Chỉnh sửa
+                                                </span>
+                                                <span class="ln-comment-delete">
+                                                    <i class="fas fa-times"> </i>
+                                                    Xóa
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                                <div class="more-comment-reply" id="@item.comment_id">
+                                    <a href="javascript:;">
+                                        <i style="transform: rotate(180deg);" class="fas fa-reply"></i>
+                                        <span>@item.countChil phản hồi</span>
+                                    </a>
+                                    <img class="img-loading" src="~/imageIcon/loading.svg" />
+                                </div>
+
+                            }
+
+                        </div>
+                        @if (user_id != "")
+                        {
+                            <form class="form__comment padding-l-r-10" method="get" action="">
+                                <div class="ln-comment-user-avt">
+                                    <img src="~/avatar/@avatar" alt="Avatar" />
+                                </div>
+                                <textarea id="textarea-cmt" class="editor__comment"></textarea>
+                                <button id="submit-cmt" class="button-cmt" type="button">Đăng bình luận</button>
+                            </form>
+                        }
+
+
+                    </div>
+
+                </div>
+                <div class="info__translator">
+                    <div class="info__translator-wrapper">
+                        @if (ViewBag.ModelTrans != null)
+                        {
+                            <div class="translator__name-wrapper">
+                                <div class="info__translator-name">
+                                    <div class="translator__avt">
+                                        <img src="@ModelTrans.avatar" alt="">
+                                    </div>
+                                    <div class="translator__name">
+                                        <a href="">@ModelTrans.user_name</a>
+                                    </div>
+                                </div>
+                                <div class="info__translation padding-all-10">
+                                    <div class="info__translation-title">Nhóm dịch</div>
+                                    <div class="info__translation-name"><a href="">@ModelTrans.trans_name</a></div>
+                                </div>
+                            </div>
+
+                        }
+                        @Html.Action("ListStoryOfAuthorTrans", "Story")
+                        <div style="display:none" id="user" data-user_id="@user_id" data-user_avatar="@avatar" data-user_name="@name"></div>
+                    </div>
+                </div>
+                <!-- <div class="tab-pane fade" id="comment">
+                    <div class="mb15">
+                        <div class="title-block">
+                            <h2 class="title-group">Bình luận</h2>
+                        </div>
+                    </div>
+
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script src="~/Scripts/Comment/Comment.js"></script>
+<script>
+    const follow_story = document.getElementById('story_follow');
+    const story_id = follow_story.getAttribute('data-story_id');
+    function seeMoreGenre() {
+        const see_more_genre = document.getElementById('see-more-genre');
+        if (see_more_genre != undefined) {
+            see_more_genre.addEventListener('click', function () {
+                see_more_genre.style.display = 'none';
+                const list_genre_none = document.getElementsByClassName('item-genre-none');
+                for (let i = 0; i < list_genre_none.length; i++)
+                    list_genre_none[i].style.display = 'flex';
+            })
+
+        }
+    }
+    //event see more genre
+    seeMoreGenre();
+    function followStory() {          
+        const icon_follow = document.getElementById('icon_follow');
+        follow_story.addEventListener('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "/Story/FollowStory",
+                data: { story_id: story_id },
+                success: function (data) {
+                    if (data == "Bạn đã theo dõi truyện này")
+                        icon_follow.classList.replace("far", "fas");
+                    else
+                        icon_follow.classList.replace("fas", "far");
+                    alert(data);
+                }
+            })
+        })
+    }
+    //event follow story
+    followStory();
+
+    function loadIdTarget() {
+        // load to commentid target
+        const currentURL = window.location.href;
+        const comment_id = currentURL.split("comment_id=")[1];
+        const elentment_commentId = document.getElementById(comment_id);
+        if (elentment_commentId != undefined) {
+            elentment_commentId.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+    //load content story
+    $.ajax({
+        url: '/Story/GetDataVolume',
+        data: { story_id: story_id },
+        success: function (data) {
+            const contentVolume = document.getElementsByClassName('detail__list-vol')[0];
+            data.forEach(function (item) {
+                let listChapter = '';
+                let countChap = item.list_chap.length;
+                item.list_chap.slice(0, 5).forEach(function (item1) {
+                    listChapter += '<div class="chapter__item overflowContent">' +
+                        '<a class="overflowContent" href="/truyen/' + item1.link_chapter + '">' + item1.name + '</a>' +
+                        '<span>' + item1.newtimeUpdate + '</span>' +
+                        '</div>';
+                });
+                if (item.list_chap.length > 5) {
+                    item.list_chap.slice(5).forEach(function (item1) {
+                        listChapter += '<div style = "display:none" class="chapter__item overflowContent none">' +
+                            '<a class="overflowContent" href="/truyen/' + item1.link_chapter + '">' + item1.name + '</a>' +
+                            '<span>' + item1.newtimeUpdate + '</span>' +
+                            '</div>';
+                    });
+                    listChapter += '<div class="mobile-more">' +
+                        '<div class="see-more-chapter">' +
+                        '<span>Xem tiếp (' + (countChap - 5) + ' chương)</span>' +
+                        '</div>' +
+                        '</div>';
+                }
+
+                let elementVolume = '<div class="list__vol-wrapper">' +
+                    '<div class="vol__title">' +
+                    '<span>' + item.name + '</span>' +
+                    '<span style="color: red;">*</span>' +
+                    '</div>' +
+                    '<div class="list__vol-item">' +
+                    '<div class="vol__item-img padding-l-r-10">' +
+                    '<a href="">' +
+                    '<img class="vol__avatar-img" src="/Content/imageVolume/' + item.volumeImg + '" alt="">' +
+                    '</a>' +
+                    '</div>' +
+                    '<div class="list__chapter">' +
+                    listChapter +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+
+                //let elementChil = document.createElement('div');
+                //elementChil.innerHTML = elementVolume;
+                contentVolume.innerHTML += elementVolume;
+            });
+            loadIdTarget();
+            const list_seemore_chapter = document.getElementsByClassName('mobile-more');
+            for (let i = 0; i < list_seemore_chapter.length; i++) {
+                list_seemore_chapter[i].addEventListener('click', function () {
+                    let list_element_chapter = list_seemore_chapter[i].parentNode.querySelectorAll('.none');
+                    list_element_chapter.forEach(function (item) {
+                        item.style.display = 'flex';
+                    });
+                    list_seemore_chapter[i].style.display = 'none';
+                })
+            }
+        },
+        error: function () {
+            alert('Đã xảy ra lỗi');
+        }
+    });
+   
+
+    
+
+</script>

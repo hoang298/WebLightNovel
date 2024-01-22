@@ -1,0 +1,38 @@
+﻿@model List<WebLightNovel.Models.Entity.Genre>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListGenres</title>
+    <style>
+        a{
+            font-size:1.8rem;
+        }
+        ul{
+            padding: 0 0;
+            margin: 0 10px;
+        }
+        .genres_item {
+            padding-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div> 
+        <ul>
+            @foreach (var item in Model)
+            {
+                <li class="genres_item">
+                    <a href="">@item.name</a>
+                </li>
+            }
+
+        </ul>
+    </div>
+</body>
+</html>

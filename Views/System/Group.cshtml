@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Group";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+    var listTrans_OfMe = ViewBag.trans_Ofme as List<WebLightNovel.Models.SystemModel.GroupViewModel>;
+    var listTrans_Join = ViewBag.trans_Join as List<WebLightNovel.Models.SystemModel.GroupViewModel>;
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhóm của bạn
+                    <div style="float: right">
+                        <a href="/System/CreateTranslation">[Thêm]</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                </div>
+                <table class="table">
+                    <tbody>
+                        @if (ViewBag.trans_Ofme != null)
+                        {
+                            foreach (var item in listTrans_OfMe)
+                            {
+                                <tr>
+                                    <td colspan="2" class="info">
+                                        <b>@item.name</b>
+                                        <div style="float: right">
+                                            <a href="/System/InforGroup?trans_id=@item.translation_id">[Quản lý]</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Nhóm đang tham gia
+                    <div style="float: right">
+                        <a href="/System/CreateTranslation">[Thêm]</a>
+                    </div>
+                </div>
+                <div class="panel-body">
+
+                </div>
+                <table class="table">
+                    <tbody>
+                        @if (ViewBag.trans_Join != null)
+                        {
+                            foreach (var item in listTrans_Join)
+                            {
+                                <tr>
+                                    <td colspan="2" class="info">
+                                        <b>@item.name</b>
+                                        <div style="float: right">
+                                            <a href="/System/InforGroup?trans_id=@item.translation_id">[Xem thông tin]</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

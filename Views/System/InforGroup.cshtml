@@ -1,0 +1,270 @@
+﻿@model WebLightNovel.Models.SystemModel.InfoGroupViewModel
+@{
+    ViewBag.Title = "InforGroup";
+    Layout = "~/Views/Shared/_LayoutSystem.cshtml";
+    int i = 1;
+    int j = 1;
+    int trans_id = Convert.ToInt32(ViewBag.Trans_id);
+    bool isCaptain = (bool)ViewBag.isCaptain ;
+}
+<head>
+    <link href="~/css/InforGroup/main.css" rel="stylesheet" />
+</head>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12  ">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Danh sách thành viên
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Tên thành viên</th>
+                                <th scope="col">Chức vụ</th>
+                                <th scope="col">Ngày gia nhập</th>
+                                <th scope="col">Trang cá nhân</th>
+                                <th scope="col">Tùy chọn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.MemberTranslation)
+                            {
+                                <tr class="member_item">
+                                    <th scope="row">@i</th>
+                                    <td>@item.name</td>
+                                    <td>@item.role</td>
+                                    <td>@item.dateJoin.ToString("dd/MM/yyyy")</td>
+                                    <td><a href="/Member/Infor?id=@item.user_id">Xem trang cá nhân</a></td>
+                                    <td>
+                                        @if (isCaptain)
+                                        {
+                                            if (item.role.Contains("Thành viên"))
+                                            {
+                                            <button id="@item.user_id" class="btn btn-primary">Xóa khỏi nhóm</button>
+                                            }
+                                            else
+                                            {
+                                            <button  id="@item.user_id" class="btn btn-primary">Nhượng nhóm</button>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <button disabled id="@item.user_id" class="btn btn-primary">Xóa khỏi nhóm</button>
+                                        }
+                                    </td>
+                                </tr>
+                                i++;
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+                @if (isCaptain)
+                {
+                    <div class="panel-heading">
+                        Danh sách xin gia nhập
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Tên thành viên</th>
+                                    <th scope="col">Thời gian gửi yêu cầu</th>
+                                    <th scope="col">Trang cá nhân</th>
+                                    <th scope="col">Tùy chọn</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ListReqJoin)
+                                {
+                                    <tr data-us_id="@item.user_id" class="Join_user">
+                                        <th scope="row">@j</th>
+                                        <td>@item.user_name</td>
+                                        <td>@item.date_req.ToString("dd/MM/yyyy")</td>
+                                        <td><a href="/Member/Infor?user_id=@item.user_id">Xem trang cá nhân</a></td>
+                                        <td>
+                                            <button class="btn btn-success" type="button">Đồng ý</button>
+                                            <button class="btn btn-warning" type="button">Từ chối</button>
+                                        </td>
+                                    </tr>
+                                    j++;
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            </div>
+        </div>
+        <div class="group_info" id="@trans_id"></div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12 col-lg-3">
+            <section class="basic-section clear">
+                <ul class="statistic-top row">
+                    <li class="col-6">
+                        <div class="statistic-value">
+                            234
+                        </div>
+                        <div class="statistic-name">Chương đã đăng</div>
+                    </li>
+                    <li class="col-6">
+                        <div class="statistic-value">18</div>
+                        <div class="statistic-name">Đang theo dõi</div>
+                    </li>
+                </ul>
+                <main class="sect-body">
+                    <div class="profile-info-item">
+                        <span class="info-name"><i class="fas fa-history"></i> Tên cũ:</span>
+                        <ul style="margin: 5px 0">
+                            <li>Anchora</li>
+                        </ul>
+                    </div>
+                    <div class="p-s_i-bio">
+                        <p><strong>Fan YOASOBI 20 năm!</strong></p>
+                        <p>My YOASOBI PJ:</p>
+                        <p>1. <a href="../truyen/11932-yume-no-shizuku-to-hoshi-no-hana">Ano yume Wo Nazotte</a></p>
+                        <p>2. <a href="../truyen/12251-tabun-probably">Tabun</a></p>
+                        <p>3. <a href="../truyen/12175-ngay-tan-the-va-khuc-ca-tam-biet">Encore</a></p>
+                        <p>4. <a href="../truyen/14837-45510">Idol</a></p>
+                    </div>
+                    <div class="profile-info-item">
+                        <span class="info-name"><i class="fas fa-calendar"></i> Tham gia: </span><span class="info-value">03/03/2022</span>
+                    </div>
+                </main>
+            </section>
+        </div>
+        <div class="col-12 col-md-12 col-lg-9 col-xl-9">
+            <section class="profile-showcase">
+                <header><span class="number">@Model.ListStories.Count</span><span class="showcase-title">Truyện đã đăng</span></header>
+                <div class="row">
+                    @foreach (var item in Model.ListStories)
+                    {
+                        <div class="col-12 col-md-6">
+                            <div class="showcase-item">
+                                <div class="row">
+                                    <div class="series-cover col-4">
+                                        <div class="a6-ratio">
+                                            <div class="content img-in-ratio" style="background-image: url('@Url.Content("~/Content/imageIllustration/" + item.image)')">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="series-info">
+                                            <div class="series-type-wrapper">
+                                                <small class="series-type type-translation">Truyện dịch</small>
+                                            </div>
+                                            <h5 class="series-name text-base font-bold">
+                                                <a href="/Story/Detail?id=@item.story_id">@item.title</a>
+                                            </h5>
+                                        </div>
+                                        <div class="series-status">
+                                            <div class="status-item">
+                                                <span class="status-name">Tình trạng:</span>
+                                                @if ((int)item.state == 1)
+                                                {
+                                                    <span class="status-value">Đang tiến hành</span>
+                                                }
+                                                @if ((int)item.state == 0)
+                                                {
+                                                    <span class="status-value">Tạm ngưng</span>
+                                                }
+                                                @if ((int)item.state == 2)
+                                                {
+                                                    <span class="status-value">Đã hoàn thành</span>
+                                                }
+                                            </div>
+                                            <div class="status-item">
+                                                <span class="status-name">Lần cuối:</span>
+                                                <span class="status-value">
+                                                    <time class="timeago" title="29/03/2022 09:28:04" datetime="2022-03-29T09:28:04+07:00">1 năm</time>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</div>
+<script>
+    const Join_user = document.getElementsByClassName('Join_user');
+    const btn_success = document.getElementsByClassName('btn-success');
+    const btn_fail = document.getElementsByClassName('btn-warning');
+    const btn_primary = document.getElementsByClassName('btn-primary');
+    const member_item = document.getElementsByClassName('member_item');
+    const trans_id = document.getElementsByClassName('group_info')[0].getAttribute('id');
+    for (let i = 0; i < btn_success.length; i++) {
+        btn_success[i].addEventListener('click', function () {
+            if (confirm("Bạn có muốn thêm thành viên này khỏi nhóm")) {
+                let user_id = Join_user[i].getAttribute('data-us_id');
+                $.ajax({
+                    url: "/System/AddMemberToTransTeam",
+                    data: { trans_id: trans_id, user_id: user_id },
+                    success: function (data) {
+                        if (data == "true") {
+                            btn_success[i].textContent = "Đã chấp nhận yêu cầu";
+                            btn_success[i].disabled = true;
+                            btn_fail[i].style.display = 'none';
+                        }
+                        else
+                            alert(data);
+                    }
+                });
+            }
+
+        })
+    }
+    for (let i = 0; i < btn_fail.length; i++) {
+        btn_fail[i].addEventListener('click', function () {
+            let user_id = Join_user[i].getAttribute('data-us_id');
+            $.ajax({
+                url: "/System/RemoveReq",
+                data: { trans_id: trans_id, user_id: user_id },
+                success: function (data) {
+                    if (data == "true") {
+                        btn_fail[i].textContent = "Đã hủy yêu cầu";
+                        btn_fail[i].disabled = true;
+                        btn_success[i].style.display = 'none';
+                    }
+                    else
+                        alert(data);
+                }
+            });
+
+        })
+    }
+    for (let i = 0; i < btn_primary.length; i++) {
+        btn_primary[i].addEventListener('click', function () {
+            if (confirm("Bạn có muốn xóa thành viên này khỏi nhóm")) {
+                let user_id = btn_primary[i].getAttribute('id');
+                $.ajax({
+                    url: "/System/RemoveMember",
+                    data: { user_id: user_id, trans_id: trans_id },
+                    success: function (data) {
+                        if (data == "true") {
+                            member_item[i].remove();
+                        }
+                        else
+                            alert(data);
+                    }
+                });
+            }
+        })
+    }
+</script>

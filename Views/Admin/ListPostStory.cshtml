@@ -1,0 +1,111 @@
+﻿@model List<WebLightNovel.Models.Entity.PostStory>
+@{
+    ViewBag.Title = "ListPostStory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+}
+<head>
+    <style>
+        td > a{
+            width:150px;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<div class="admin-content-right">
+    <div class="admin-content-right-sp-list">
+        <h4 id="title_list" >Danh sách truyện được đăng</h4>
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-3">Tên Truyện</th>
+                        <th class="col-md-2">Ảnh minh họa</th>
+                        <th class="col-md-2">UserID</th>
+                        <th class="col-md-2">Thời gian</th>
+                        <th class="col-md-4">Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody class="list__story">
+                    @foreach (var item in Model)
+                    {
+                        <tr class="post_story_item">
+                            <th>@i</th>
+                            <td>@item.title</td>
+                            <td><img src="~/avatar/@item.image" /></td>
+                            <td>@item.user_id</td>
+                            <td>@item.time</td>
+                            <td>
+                                <a href="/Admin/DetailPostStory?id=@item.ordinalNumber" class="btn btn-primary btn-icon"><i class="fa fa-edit"></i>Xem chi tiết</a>
+                                <a id="@item.ordinalNumber" href="#" class="btn btn-success btn-icon"><i class="fa fa-trash"></i>Đồng ý</a>
+                                <a href="#" class="btn btn-danger btn-icon"><i class="fa fa-trash"></i>Từ chối</a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+        @*<nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link">Trang đầu</a></li>
+                <li class="page-item active"><a class="page-link">1</a></li>
+                <li class="page-item"><a class="page-link">2</a></li>
+                <li class="page-item"><a class="page-link">3</a></li>
+                <li class="page-item"><a class="page-link">4</a></li>
+                <li class="page-item"><a class="page-link">5</a></li>
+                <li class="page-item"><a class="page-link">Trang cuối</a></li>
+            </ul>
+        </nav>*@
+    </div>
+</div>
+
+<script>
+    const list_post = document.getElementsByClassName('post_story_item');
+    const btn_success = document.getElementsByClassName('btn-success');
+    const btn_danger = document.getElementsByClassName('btn-danger');
+    for (let i = 0; i < btn_success.length; i++) {
+        btn_success[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            const post_id = btn_success[i].getAttribute('id');
+            const state = 1;
+            if (post_id != null) {
+                $.ajax({
+                    url: "/Admin/ConfirmPost",
+                    data: { post_id: post_id, state: state },
+                    success: function (data) {
+                        if (data == "true") {
+                            list_post[i].remove();
+                            alert('Duyệt truyện thành công')
+                        }
+                        else
+                            alert('Thao tác thất bại')
+                    }
+                });
+            }
+        })
+        btn_danger[i].addEventListener('click', function (e) {
+            e.preventDefault();
+            const post_id = btn_success[i].getAttribute('id');
+            const state = 0;
+            if (post_id != null) {
+                $.ajax({
+                    url: "/Admin/ConfirmPost",
+                    data: { post_id: post_id, state: state },
+                    success: function (data) {
+                        if (data == "true") {
+                            list_post[i].remove();
+                            alert('Thao tác thành công')
+                        }
+                        else
+                            alert('Thao tác thất bại')
+                    }
+                });
+            }
+        })
+    }
+</script>

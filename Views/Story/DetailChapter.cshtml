@@ -1,0 +1,260 @@
+﻿@model List<WebLightNovel.Models.DetailChapter.ImageViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var chapter = ViewBag.chapter as WebLightNovel.Models.DetailChapter.ChapterDetailViewModel;
+    var story = ViewBag.story as WebLightNovel.Models.Entity.Story;
+    string content = chapter.content;
+    content = content.Replace("@LineBreak", "\n");
+    List<string> l = new List<string>();
+    if (content != "")
+    {
+        l = content.Split("\n".ToCharArray()).ToList();
+    }
+    int i = 0;
+    string next = ViewBag.chapter_next == null ? "" : ViewBag.chapter_next as string;
+    string prev = ViewBag.chapter_prev == null ? "" : ViewBag.chapter_prev as string;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đọc @story.title</title>
+    <link rel="stylesheet" href="~/css/base.css">
+    <link rel="stylesheet" href="~/css/main.css">
+    <link rel="stylesheet" href="~/css/reset.css">
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+    <link href="~/css/detail.css" rel="stylesheet" />
+    <link href="~/css/detailChapter.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    @*    <script src="https://code.responsivevoice.org/responsivevoice.js?key=svLmp5TA"></script>
+    *@@**@
+    <style>
+        h2 {
+            text-align: center
+        }
+
+        .disabled {
+            cursor: not-allowed;
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        .text-content img {
+            display: block;
+            height: auto;
+            margin: auto;
+            max-width: 100%;
+            padding-bottom: 20px;
+        }
+    </style>
+    <script>
+
+    </script>
+</head>
+<body>
+    <div class="app">
+        <a href="/truyen/@story.story_id/@story.title.Trim().Replace(" ","-")"><h2>@story.title</h2></a>
+        <div class="detail__container">
+            <h2 style="padding:0 10%">@chapter.name</h2>
+            <div id="chapter_info" data-story_name="@story.title" data-chapter_name="@chapter.name" data-story_url="/truyen/@story.story_id/@story.title.Trim().Replace(" ","-").ToLower()" data-story_image="/Content/imageIllustration/@story.cover_image" data-story_id="@story.story_id" data-chapter_url="/truyen/@story.story_id/@story.title.Trim().Replace(" ","-").ToLower()/@chapter.chapter_id/@chapter.name.Trim().Replace(" ","-").ToLower()" data-chapter_id="@chapter.chapter_id" style="display:none"></div>
+            <div class="speak__chapter">
+                <div class="speak__chapter-btn">
+                    <button class="btn__speak-play" type="button" id="btn__speak">Play</button>
+                    <button class="btn__speak-replay" type="button" id="btn__replay">Replay</button>
+                </div>
+                <div class="speak__chapter-option">
+                    @*<div class="speak__option-mute">
+                            <span>Mute: </span>
+                            <i class="fas fa-toggle-on"></i>
+                        </div>*@
+                    <div class="speak__option-volume">
+                        <div>Âm lượng </div>
+                        <div class="speak__option-item">
+                            <span id="volume_text">1</span>
+                            <input id="speak_volume" min="0" max="1" step="0.01" type="range" />
+                        </div>
+
+                    </div>
+                    <div class="speak__option-range">
+                        <div>Tốc độ </div>
+                        <div class="speak__option-item">
+                            <span id="range_text">1</span>
+                            <input id="speak_range" min="0.1" max="3" step="0.01" type="range" />
+                        </div>
+
+                    </div>
+                    <div class="speak__option-pitch">
+                        <div>Tần số </div>
+                        <div class="speak__option-item">
+                            <span id="pitch_text">1</span>
+                            <input id="speak_pitch" min="0" max="2" step="0.01" type="range" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="chapter_content">
+                @foreach (var item in l)
+                {
+                <p class="text-content">
+                    @item
+                    @foreach (var item1 in Model)
+                    {
+                        if (i == item1.rowNumber)
+                        {
+                            if (item1.img_name.StartsWith("http"))
+                            {
+                                <img src="@item1.img_name" alt="Alternate Text" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/imageChapter/@item1.img_name" alt="Alternate Text" />
+
+                            }
+                        }
+                    }
+                </p>
+                    i++;
+                }
+                @if (l.Count == 0)
+                {
+                    foreach (var item1 in Model)
+                    {
+                        <p class="text-content">
+                            <img src="~/Content/imageChapter/@item1.img_name" alt="Alternate Text" />                                                   
+                        </p>                   
+                    }
+                }
+                    </div>
+                </div>
+                <div class="Option__Icon">
+                    @if (prev != "")
+                    {
+                        <a href="/truyen/@prev" class="Option__Icon-item btn__Chapter-prev">
+                            <i class="fas fa-backward"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="" class="Option__Icon-item btn__Chapter-prev disabled">
+                            <i class="fas fa-backward"></i>
+                        </a>
+                    }
+                    <a href="/Home/Index" class="Option__Icon-item">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    <a id="Option__Icon_font" href="" class="Option__Icon-item">
+                        <i class="fas fa-font"></i>
+                    </a>
+                    <a href="" class="Option__Icon-item">
+                        <i class="fas fa-info"></i>
+                    </a>
+                    <a href="" class="Option__Icon-item">
+                        <i class="fas fa-bookmark"></i>
+                    </a>
+                    @if (next != "")
+                    {
+                        <a href="/truyen/@next" class="Option__Icon-item btn__Chapter-next ">
+                            <i class="fas fa-forward"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a href="" class="Option__Icon-item btn__Chapter-next disabled">
+                            <i class="fas fa-forward"></i>
+                        </a>
+                    }
+
+                </div>
+            </div>
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-overlay">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button id="btn_close" type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Tùy chỉnh</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="modal-body_item">
+                                    <label>Font chữ</label>
+                                    <select id="select_font">
+                                        <option selected="selected">Times New Roman</option>
+                                        <option>Arial</option>
+                                        <option>Courier New</option>
+                                        <option>Palatino</option>
+                                        <option>Impact</option>
+                                    </select>
+                                    <input type="number" readonly style="display:none" value="" name="receiver_id" />
+                                </div>
+                                <div class="modal-body_item">
+                                    <label>Kích cỡ chữ</label>
+                                    <input id="select_font_size" value="" required type="number" min="1" />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </body>
+    </html>
+    <script src="~/Scripts/speakStory.js"></script>
+    <script>
+        const Option__Icon_font = document.getElementById('Option__Icon_font');
+        const option_font_content = document.getElementsByClassName('modal-content')[0];
+        if (localStorage.getItem('font-size') != null) {
+            $('p').css('font-size', localStorage.getItem('font-size') + 'px');
+            $('#select_font_size').val(localStorage.getItem('font-size'));
+        }
+        else
+            $('#select_font_size').val(18);
+        if (localStorage.getItem('font-family') != null) {
+            $('p').css('font-family', localStorage.getItem('font-family'));
+            $('#select_font').val(localStorage.getItem('font-family'))
+        }
+        else
+            $('#select_font').val('Times New Roman');
+        Option__Icon_font.addEventListener('click', function (e) {
+            e.preventDefault();
+            $('#myModal').css('display', 'block');
+            $('body').addClass('modal-open');
+        })
+        $('#btn_close').on('click', function () {
+            $('#myModal').css('display', 'none');
+            $('body').removeClass('modal-open');
+        })
+        $('#select_font').on('change', function () {
+            $('p').css('font-family', $('#select_font').val());
+            localStorage.setItem('font-family', $('#select_font').val());
+        })
+        $('#select_font_size').on('change', function () {
+            $('p').css('font-size', $('#select_font_size').val() + 'px');
+            localStorage.setItem('font-size', $('#select_font_size').val());
+        })
+        $(document).on('click', function (e) {
+            if ($(e.target).closest(option_font_content).length == 0 && $(e.target).closest(Option__Icon_font).length == 0)
+                $('#myModal').css('display', 'none');
+        })
+        //responsiveVoice.speak(content, 'Vietnamese Female');
+        const link_story_prev = $('.btn__Chapter-prev').attr('href');
+        const link_story_next = $('.btn__Chapter-next').attr('href');
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "ArrowRight") {
+                if (link_story_next != undefined && $('.btn__Chapter-next.disabled').length == 0)
+                    window.location.href = link_story_next;
+            }
+            else if (event.key === "ArrowLeft") {
+                if (link_story_prev != undefined && $('.btn__Chapter-prev.disabled').length == 0)
+                    window.location.href = link_story_prev;
+            }
+        });
+    </script>
+    <script src="~/Scripts/CookieLocalStore/History/AddHistory.js"></script>

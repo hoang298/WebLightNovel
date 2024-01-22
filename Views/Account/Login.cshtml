@@ -1,0 +1,77 @@
+﻿@model WebLightNovel.Models.Account.LoginViewModel
+@using Microsoft.Owin.Security
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Light Novel</title>
+    <link rel="stylesheet" href="~/css/Login.css">
+    <link rel="stylesheet" href="~/fonts/fontawesome-free-5.15.4-web/css/all.min.css">
+
+</head>
+<body>
+    <div>
+        <form action="/Account/Login" method="POST">
+            @Html.AntiForgeryToken()
+            <div class="modal">
+                <div class="modal__overlay"></div>
+                <div class="modal__body">
+                    <div class="auth-form">
+                        <div class="auth-form__container">
+                            <div class="auth-form__header">
+                                <h3 class="auth-form-heading">Đăng nhập</h3>
+                                <a style="text-decoration:none" href="/Account/Register"><span class="auth-form__swich-btn">Đăng ký</span></a>
+                            </div>
+                            <div class="auth-form__form">
+                                <div class="auth-form__group">
+                                    <input required type="text" name="UserName" class="auth-form__input" placeholder="Tài khoản của bạn">
+                                </div>
+                                <div class="auth-form__group">
+                                    <input required type="password" name="Password" class="auth-form__input" placeholder="Nhập mật khẩu">
+                                </div>
+
+                            </div>
+                            <div class="auth-form__aside">
+                                <div class="auth-form__help">
+                                    <a href="/Account/ForgotPassword" class="auth-form__help-link auth-form__help-color">Quên mật khẩu</a>
+                                    <span class="auth-form__help-chia"></span>
+                                    <a href="" class="auth-form__help-link">Trợ giúp</a>
+                                </div>
+                                <h4 style="color:red; font-size:15px;margin-top:10px">
+                                </h4>
+
+                            </div>
+                            <div class="auth-form__controls">
+                                <span>@Html.ActionLink("TRỞ LẠI", "Index", "Home", null, new { @class = "btn auth-form__controls-back" })</span>
+                                <input type="submit" name="submit" class="btn btn__primary" value="ĐĂNG NHẬP">
+                            </div>
+                        </div>
+                        <div class="auth-form__socials">
+                            <a href="/Account/ExternalLogin?provider=Facebook" class="auth-form__socials--facebook btn btn btn--size-s btn--with-icon">
+                                <i class="auth-form__socials-icon fab fa-facebook-square"></i>
+                                <span class="auth-form__socials__title">
+                                    Kết nối với Facebook
+                                </span>
+                            </a>
+                            <a href="/Account/ExternalLogin?provider=Google" class="auth-form__socials--google btn btn--size-s btn--with-icon">
+                                <i class="auth-form__socials-icon fab fa-google"></i>
+                                <span class="auth-form__socials__title">
+                                    Kết nối với Google
+                                </span>
+
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>

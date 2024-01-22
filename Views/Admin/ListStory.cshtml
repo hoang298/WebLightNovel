@@ -1,0 +1,102 @@
+﻿@model List<WebLightNovel.Models.Entity.Story>
+@{
+    ViewBag.Title = "ListStory";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int i = 1;
+    int sotrang = ViewBag.soTrang;
+}
+
+<div class="admin-content-right">
+    <div class="admin-content-right-sp-list">
+        <h4 id="title_list" data-sotrang="@sotrang">Danh sách truyện</h4>    
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">#</th>
+                        <th class="col-md-2">Mã Truyện</th>
+                        <th class="col-md-5">Tên Truyện</th>
+                        <th class="col-md-2">Ảnh minh họa</th>
+                        <th class="col-md-2">Tùy chọn</th>
+                    </tr>
+                </thead>
+                <tbody class="list__story">
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th >@i</th>
+                            <td>@item.story_id</td>
+                            <td >@item.title</td>
+                            <td  ><img src="~/image/@item.cover_image" /></td>
+                            <td>
+                                <a href="/Admin/EditStory?id=@item.story_id" class="btn btn-primary btn-icon"><i class="fa fa-edit"></i></a>
+                                <a href="/Admin/Delete?id=@item.story_id" class="btn btn-danger btn-icon"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+        
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link">Trang đầu</a></li>
+                <li class="page-item active"><a class="page-link" >1</a></li>
+                <li class="page-item"><a class="page-link" >2</a></li>
+                <li class="page-item"><a class="page-link" >3</a></li>
+                <li class="page-item"><a class="page-link">4</a></li>
+                <li class="page-item"><a class="page-link" >5</a></li>
+                <li class="page-item"><a class="page-link">Trang cuối</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<script>
+    const listpage = document.getElementsByClassName('page-link');
+    const sotrang = document.getElementById('title_list').getAttribute('data-sotrang');
+    let active = 1;
+    for (let i = 0; i < listpage.length; i++) {
+        listpage[i].addEventListener('click', function () {
+            let page = listpage[i].textContent;
+            let check = 0;
+            if (page == "Trang đầu") {
+                page = 1;
+                check = 1;
+            }
+            else if (page == "Trang cuối") {
+                page = sotrang - 4;
+                check = 2;
+            }
+            $.ajax({
+                url: "/Admin/PhanTrang",
+                data: { page: page },
+                success: function (data) {
+                    document.getElementsByClassName('active')[0].classList.remove('active');
+                    $('.list__story').html(data);
+                    let index = page;
+                    if (index <= sotrang - 4 && (check != 0 || i == listpage.length - 2)) {
+                        for (let j = 1; j < listpage.length - 1; j++) {
+                            document.getElementsByClassName('page-link')[j].textContent = index;
+                            index++;
+                        }
+                    }
+                    if (check == 0 && i != listpage.length - 2) {
+                        document.getElementsByClassName('page-item')[i].classList.add('active');
+                    }
+                    else if (page == sotrang) {
+                        document.getElementsByClassName('page-item')[i].classList.add('active');
+                    }
+                    else {
+                        document.getElementsByClassName('page-item')[1].classList.add('active');
+                    }              
+                }
+            });
+        })
+    }
+    
+
+   
+</script>

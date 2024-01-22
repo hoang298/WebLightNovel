@@ -1,0 +1,201 @@
+﻿@model List<WebLightNovel.Models.ModelStory.StoryIndexViewModel>
+@{
+    ViewBag.Title = "ListStory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string sort = ViewData["sort"].ToString();
+    string sort_value = "update";
+    if(sort == "Theo dõi")
+    {
+        sort_value = "topFollow";
+
+    }
+    if (sort == "Top toàn thời gian")
+    {
+        sort_value = "topView";
+
+    }
+    if (sort == "Số từ")
+    {
+        sort_value = "topTotalWord";
+
+    }
+    int countPage = ViewBag.countPage;
+    int page = ViewBag.page;
+}
+<head>
+    <style>
+        select{
+            height:40px;
+            width:150px;
+        }
+        .nav_pagination {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top:20px;
+        }
+        .pagination {
+            width:50%;
+            display:flex;
+            text-align:center;
+        }
+        .page-item {
+            width: 36px;
+            height: 30px;
+            border-radius: 20px;         
+            font-weight: 700;
+            line-height: 30px;
+            margin-right: 2px;
+            min-width: 30px;
+            text-align: center;
+        }     
+        .page-item > a{
+            font-size:16px;
+            color:#36a189;
+        }
+        .active {
+            background-color: #097059;
+            color:white;
+        }
+    </style>
+</head>
+<div class="container">
+    <div class="banner">
+        @*<div class="banner_img">
+            <img src="~/avatar/banner.jpeg" />
+        </div>*@
+        <div class="banner__title">
+            <select data-sort="@sort" id="sort" class="block inline-m">
+                <option value="update">Mới cập nhật</option>
+                <option value="topFollow">Theo dõi</option>
+                <option value="topView">Top toàn thời gian</option>
+                <option value="topTotalWord">Số từ</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="content">
+        <div class="content__update">
+            <div class="content__update-wrapper padding-all-10">
+                <div class="content__title">
+                    <h2 id="title_list" data-sotrang="@countPage">
+                        Danh sách
+                    </h2>
+                </div>
+                <div class="list__manga-wrapper">
+                    @foreach (var item in Model)
+                    {
+                        <div class="manga__item">
+                            <div class="manga__item-img">
+                                <a href="/truyen/@item.link_story">
+                                    <img src="~/Content/imageIllustration/@item.cover_image" alt="">
+                                </a>
+                              
+                            </div>
+                            <div class="manga__item-caption">
+                                <h3 class="manga__item-title">
+                                    <a href="/truyen/@item.link_story"> @item.title</a>
+                                </h3>
+                                <ul class="manga__item-history">
+                                    <li class="item__history-chapter ">
+                                        <a class="overflowContent" href="/truyen/@item.link_chapter">@item.chapter_name</a>
+                                        <span>
+                                            @item.newtimeUpdate
+                                        </span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <nav class="nav_pagination" aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item"><a href="/Story/ListStory?sort=@sort_value&page=1" class="page-link">Đầu</a></li>
+                        @if (page - 2 > 0 && countPage - 2 >= page)
+                        {
+                            for (int i = page - 2; i <= page + 2; i++)
+                            {
+                                if (i != page)
+                                {
+                                    <li class="page-item"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                                else
+                                {
+                                    <li class="page-item active"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                            }
+                        }
+                        else if (page < 5)
+                        {
+                            for (int i = 1; i <= 5; i++)
+                            {
+                                if (i != page)
+                                {
+                                    <li class="page-item"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                                else
+                                {
+                                    <li class="page-item active"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = countPage - 4; i <= countPage; i++)
+                            {
+                                if (i != page)
+                                {
+                                    <li class="page-item"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                                else
+                                {
+                                    <li class="page-item active"><a href="/Story/ListStory?sort=@sort_value&page=@i" class="page-link">@i</a></li>
+
+                                }
+                            }
+                        }
+                        <li class="page-item"><a href="/Story/ListStory?sort=@sort_value&page=@countPage" class="page-link">Cuối</a></li>
+
+                    </ul>
+                </nav>
+            </div>
+            <div class="manga__information">
+                <div class="list__manga-history">
+                    <div class="history__title ">
+                        <h2 style="text-align:center">Thể loại</h2>
+                    </div>
+                    @Html.Action("ListGenres","Story")
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#sort').on('change', function () {
+        const sort_value = $('#sort').val();
+        window.location.href = "/Story/ListStory?sort=" + sort_value;
+    })
+    const list_option = document.getElementsByTagName('option');
+    for (let i = 0; i < list_option.length; i++) {
+        if (list_option[i].textContent == $('#sort').attr('data-sort'))
+            list_option[i].selected = true;
+    }
+    const list_page = document.querySelectorAll('.page-item:not(.active)');
+    for (let i = 0; i < list_page.length; i++) {
+        list_page[i].addEventListener('mouseover', function () {
+            list_page[i].style.backgroundColor = '#097059';
+        });
+        list_page[i].addEventListener('mouseout', function () {
+            list_page[i].style.backgroundColor = '#f9f9f9';
+        });
+    }
+</script>

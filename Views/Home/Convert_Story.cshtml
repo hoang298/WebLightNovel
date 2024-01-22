@@ -1,0 +1,163 @@
+﻿@model List<WebLightNovel.Models.ModelStory.StoryIndexViewModel>
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string convert = ViewBag.convert;
+}
+<div class="container">
+    <div class="content">
+        <div class="content__update">
+            <div class="content__update-wrapper">
+                <div class="content__title">
+                    <h2>
+                        @convert
+                    </h2>
+                </div>
+                <div class="list__manga-wrapper">
+                    @foreach (var item in Model)
+                    {
+                        <div class="manga__item">
+                            <div class="manga__item-img">
+                                <a href="/Story/Detail?id=@item.story_id">
+                                    <img src="~/Content/imageIllustration/@item.cover_image" alt="">
+                                </a>
+                                <div class="manga__item-view">
+                                    <div class="view">
+                                        <i class="far fa-eye fa-sm" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                    <div class="view">
+                                        <i class="far fa-comment" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                    <div class="view">
+                                        <i class="far fa-heart" style="color: white;"></i>
+                                        <h5>2.71k</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="manga__item-caption">
+                                <h3 class="manga__item-title">
+                                    <a href="/Story/DetaiChapter?id=@item.newChapter_id"> @item.title</a>
+                                </h3>
+                                <ul class="manga__item-history">
+                                    <li class="item__history-chapter ">
+                                        <a class="overflowContent" href="/Story/DetailChapter?id=@item.newChapter_id">@item.chapter_name</a>
+                                        <span>
+                                            @item.newtimeUpdate
+                                        </span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+            <div class="manga__information">
+                <div class="list__manga-history">
+                    <div class="history__title">
+                        <h2>Lịch sử đọc truyện</h2>
+                        <a href="">Xem tất cả</a>
+                    </div>
+                    <ul class="list__manga-content">
+                        <li class="history__item">
+                            <div class="history__item-wrapper">
+                                <a href="">
+                                    <img src="" alt="">
+                                </a>
+                            </div>
+                            <div class="history__item-caption">
+                                <div class="history__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="history__item-option">
+                                    <a href="">
+                                        Đọc tiếp chapter 30
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <a class="history__btn-delete" href="">
+                                        <i class="fa fa-times"></i>
+                                        Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="history__item">
+                            <div class="history__item-wrapper">
+                                <a href="">
+                                    <img src="" alt="">
+                                </a>
+                            </div>
+                            <div class="history__item-caption">
+                                <div class="history__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="history__item-option">
+                                    <a href="">
+                                        Đọc tiếp chapter 30
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <a class="history__btn-delete" href="">
+                                        <i class="fa fa-times"></i>
+                                        Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="history__item">
+                            <div class="history__item-wrapper">
+                                <a href="">
+                                    <img src="" alt="">
+                                </a>
+                            </div>
+                            <div class="history__item-caption">
+                                <div class="history__item-caption-title">
+                                    <a href="">Nhà có 5 nàng dâu</a>
+                                </div>
+                                <div class="history__item-option">
+                                    <a href="">
+                                        Đọc tiếp chapter 30
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                    <a class="history__btn-delete" href="">
+                                        <i class="fa fa-times"></i>
+                                        Xóa
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+                <div class="manga__rank">
+                    <div class="rank__title">
+                        <ul class="list__rank-title">
+                            <li class="list__rank-title-item">
+                                <a href="">Top Ngày</a>
+                            </li>
+                            <li class="list__rank-title-item">
+                                <a href="">Top Tuần</a>
+                            </li>
+                            <li class="list__rank-title-item">
+                                <a href="">Top Tháng</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="list__rank-content">
+                        @Html.Action("RenderTopView", "Home")
+                    </ul>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/History/RenderHistory.js"></script>
